@@ -54,7 +54,6 @@ public class RegistrationApp {
 		if(theCourse!=null)
 		{
 			ArrayList<CourseOffering> offList = theCourse.getOfferingList();
-			sendString("Which offering would you like to choose? ");
 			for(int i=0; i<offList.size(); i++)
 			{
 				sendString(i+1 + ". " + offList.get(i).toString());
