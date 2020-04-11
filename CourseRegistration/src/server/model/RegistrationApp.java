@@ -1,4 +1,4 @@
-package server.model;
+package Server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,31 +25,11 @@ public class RegistrationApp {
 		}
 		student = new Student("Martin", 30068529);
 		cat = new CourseCatalogue();
-		menu();
-	}
-	public void menu()
-	{
-		sendString("Please choose one of the following opperations: ");
-		sendString("1. Search catalogue courses ");
-		sendString("2. Add course to student courses ");
-		sendString("3. Remove course from student courses ");
-		sendString("4. View all courses in catalogue ");
-		sendString("5. View all courses taken by student ");
 	}
 	
-	public void searchCatalogueCourses()
+	public void searchCatalogueCourses(String courseName, int courseNum)
 	{
-		sendString("Please enter the name of the course you want to search ");
-		try {
-			String courseName = socketIn.readLine();
-			sendString("Please enter the number of " + socketIn.readLine() + " course");
-			int courseNum = Integer.parseInt(socketIn.readLine());
-			theCourse = cat.searchCat(courseName, courseNum);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		}
+		theCourse = cat.searchCat(courseName, courseNum);
 		if (theCourse != null) {
 			sendString("Course found: ");
 			sendString(theCourse.getCourseOfferingAt(0).toString());
@@ -68,17 +48,9 @@ public class RegistrationApp {
 		sendString("\n");
 	}
 	
-	public void addStudentCourses()
+	public void addStudentCourses(String courseName, int courseNum)
 	{
-		try {
-			sendString("Please enter the name of the course you want to add: ");
-			String courseName = socketIn.readLine();
-			sendString("Please enter the number of " + socketIn.readLine() + " course");
-			int courseNum = Integer.parseInt(socketIn.readLine());
-			theCourse = cat.searchCat(courseName, courseNum);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		theCourse = cat.searchCat(courseName, courseNum);
 		if(theCourse!=null)
 		{
 			ArrayList<CourseOffering> offList = theCourse.getOfferingList();
@@ -88,45 +60,40 @@ public class RegistrationApp {
 				sendString(i+1 + ". " + offList.get(i).toString());
 				sendString("\n");
 			}
-			try {
-				int choice = Integer.parseInt(socketIn.readLine());
-				Registration rg;
-				switch(choice)
-				{
-				case 1:
-					rg = new Registration(student, theCourse.getCourseOfferingAt(0));
-					break;
-				case 2:
-					rg = new Registration(student, theCourse.getCourseOfferingAt(1));
-					break;
-				case 3:
-					rg = new Registration(student, theCourse.getCourseOfferingAt(2));
-				}
+//			try {
+//				int choice = Integer.parseInt(socketIn.readLine());
+//				Registration rg;
+//				switch(choice)
+//				{
+//				case 1:
+//					rg = new Registration(student, theCourse.getCourseOfferingAt(0));
+//					break;
+//				case 2:
+//					rg = new Registration(student, theCourse.getCourseOfferingAt(1));
+//					break;
+//				case 3:
+//					rg = new Registration(student, theCourse.getCourseOfferingAt(2));
+//				}
 				student.printAllStudentCourses(theSocket);
 				sendString("\n");
 			sendString("\n");
-			} catch (NumberFormatException | IOException e) {
-				e.printStackTrace();
-			}
+//			} catch (NumberFormatException | IOException e) {
+//				e.printStackTrace();
+//			}
 		}
 	}
 	
-	public void removeStudentCourses()
+	public void removeStudentCourses(int choice)
 	{
-		sendString("Which course would you like to remove? ");
+		/**
+		 * This line should be in the server right before this function is called:
+		 * sendString("Which course would you like to remove? ");
+		 */
 		student.printAllStudentCourses(theSocket);
 		if(student.getOfferingListSize()!=0)
 		{
-			int choice;
-			try {
-				choice = Integer.parseInt(socketIn.readLine());
-				Registration rg = new Registration(student, student.getOfferingList().get(choice-1), "remove");
-				sendString("Operation succedded! ");
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			Registration rg = new Registration(student, student.getOfferingList().get(choice-1), "remove");
+			sendString("Operation succedded! ");
 		}
 		sendString("\n");
 	}
