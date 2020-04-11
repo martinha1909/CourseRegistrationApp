@@ -10,9 +10,9 @@ public class GUI
     JButton b4;
     JButton b5;
 
-    public GUI()
+    public GUI(String name)
     {
-        frame = new JFrame("Course Registration");
+        frame = new JFrame(name);
         b1 = new JButton("Search catalogue courses.");
         b2 = new JButton("Add course to student courses.");
         b3 = new JButton("Remove course from student courses.");
@@ -34,8 +34,4 @@ public class GUI
         frame.setVisible(true);     
     }
 
-    public static void main(String[] args)
-    {
-        GUI myGUI = new GUI();
-    }
 }
