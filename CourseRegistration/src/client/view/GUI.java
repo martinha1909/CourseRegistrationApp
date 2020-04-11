@@ -30,23 +30,18 @@ public class GUI
         gbc.gridy = 0;
         panel.add(label, gbc);
         
-        gbc.gridx = 0;
         gbc.gridy = 1;
         panel.add(b1, gbc);
        
-        gbc.gridx = 0;
         gbc.gridy = 2;
         panel.add(b2, gbc);
-        
-        gbc.gridx = 0;
+
         gbc.gridy = 3;
         panel.add(b3, gbc);
         
-        gbc.gridx = 0;
         gbc.gridy = 4;
         panel.add(b4, gbc);
         
-        gbc.gridx = 0;
         gbc.gridy = 5;
         panel.add(b5, gbc);
         
