@@ -5,9 +5,9 @@ public class GUI
 {    
     public GUI() {}
 
-    public void displayMenu(String name)
+    public void displayMenu()
     {
-        JFrame frame = new JFrame(name);
+        JFrame frame = new JFrame("Course Registration");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         JLabel label = new JLabel("Please select an option:");
@@ -17,9 +17,7 @@ public class GUI
         JButton b4 = new JButton("View all courses in catalogue.");
         JButton b5 = new JButton("View all courses taken by student.");
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridBagLayout());
-
+        JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -51,14 +49,37 @@ public class GUI
         frame.setVisible(true);
     }
 
+    public void displayCatalogue()
+    {
+        JFrame frame = new JFrame("Course Catalogue");
+        JPanel panel = new JPanel();
+
+        JTextArea textArea = new JTextArea(20, 50);
+        textArea.setEditable(false);
+        JScrollPane scroll = new JScrollPane(textArea);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        panel.add(scroll);
+        frame.add(panel);
+        frame.setSize(700, 375);
+        frame.setResizable(false); 
+        frame.setVisible(true);
+    }
+    
+    public void displayStudentCourses()
+    {
+        JFrame frame = new JFrame("Student Course(s)");
+    }
+
     /**
      * Test code
      * Remove when done
      * @param args
      */
-    // public static void main(String[] args)
-    // {
-    //     GUI myGUI = new GUI("Course Registration");
-    //     myGUI.displayMenu();
-    // }
+    public static void main(String[] args)
+    {
+        GUI myGUI = new GUI();
+        myGUI.displayMenu();
+        myGUI.displayCatalogue();
+    }
 }
