@@ -43,7 +43,7 @@ public class ServerCommunication {
 				{
 					case 1:
 						
-						theLogic.searchCatalogueCourses(word[0]);
+						theLogic.searchCatalogueCourses(word[0],word[1]);
 						break;
 						
 					case 2:
