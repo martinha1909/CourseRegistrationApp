@@ -70,15 +70,15 @@ public class GUI
         frame.setLocationRelativeTo(null);
     }
     
-    public void displayStudentCourses(String s)
+    public void displayStudentCourses(String studentName, String studentID)
     {
         JFrame frame = new JFrame("Enrolled Course(s)");
         JPanel mainPanel = new JPanel(new BorderLayout());
-        JPanel titlePanel = new JPanel();
+        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel textPanel = new JPanel();
-        JLabel label = new JLabel("Student Name: Student ID: ");
+        JLabel label = new JLabel("     Student Name: " + studentName + "               Student ID: " + studentID);
         
-        JTextArea textArea = new JTextArea(17, 40);
+        JTextArea textArea = new JTextArea(18, 40);
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -108,6 +108,6 @@ public class GUI
     {
         GUI myGUI = new GUI();
         myGUI.displayCatalogue("");
-        myGUI.displayStudentCourses("");
+        myGUI.displayStudentCourses("John Smith", "12345678");
     }
 }
