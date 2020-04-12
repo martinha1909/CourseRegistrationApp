@@ -89,11 +89,35 @@ public class GUICommunicator {
 		return sending;
 	}
 
-	public void sendResponse(String response) {
+	public void sendResponse(String response,String number) {
 		
+		int n = Integer.parseInt(number);
 		
+		if(n == 1)
+		{
+			
+		}
+		else if(n == 2)
+		{
+			
+		}
+		else if(n == 3)
+		{
+			
+		}
+		else if(n == 4)
+		{
+			theGUI.displayCatalogue(response);
+		}
 		
+		else if(n == 5)
+		{
+			theGUI.displayStudentCourses(response);
+		}
+		
+			
 	}
+
 
 	
 }
