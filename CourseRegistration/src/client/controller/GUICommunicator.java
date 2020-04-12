@@ -41,11 +41,12 @@ public class GUICommunicator {
 				JFrame f = new JFrame();
 				JPanel p = new JPanel();
 				
+				String studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
 				String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to search for:");
 				String courseNumber = JOptionPane.showInputDialog(p,"Enter the number of the course you want to search for:");
 				
 				
-				sending = courseName + "," + courseNumber + ",2";	
+				sending = studentId + "," courseName + "," + courseNumber + ",2";	
 			}
 				
 		});
@@ -57,10 +58,11 @@ public class GUICommunicator {
 				JFrame f = new JFrame();
 				JPanel p = new JPanel();
 				
+				String studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
 				String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to search for:");
 				
 				
-				sending = courseName + ",1";	
+				sending = studentId + "," + courseName + ",3";	
 			}
 				
 		});
@@ -81,8 +83,8 @@ public class GUICommunicator {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				
-				sending = "5";	
+				String studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
+				sending = studentId + ",5";	
 			}
 				
 		});
