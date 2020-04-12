@@ -78,7 +78,28 @@ public class GUI
     
     public void displayStudentCourses()
     {
-        JFrame frame = new JFrame("Student Course(s)");
+        JFrame frame = new JFrame("Enrolled Course(s)");
+        JPanel panel = new JPanel();
+        
+        //Remove this later
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JTextArea textArea = new JTextArea(20, 40);
+        
+        //Test code
+        for (int i = 0; i < 100; i++)
+            textArea.append(" Put list of student enrolled courses here...\n");
+        
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        panel.add(scrollPane);
+        frame.add(panel);
+        frame.setSize(500, 375);
+        frame.setResizable(false); 
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
 
     /**
@@ -91,5 +112,6 @@ public class GUI
         GUI myGUI = new GUI();
         myGUI.displayMenu();
         myGUI.displayCatalogue();
+        myGUI.displayStudentCourses();
     }
 }
