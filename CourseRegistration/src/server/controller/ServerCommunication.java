@@ -1,4 +1,4 @@
-//package server.controller;
+package server.controller;
 import server.*;
 
 import java.io.BufferedReader;
