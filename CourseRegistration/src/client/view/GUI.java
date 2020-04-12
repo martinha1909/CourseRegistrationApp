@@ -52,20 +52,16 @@ public class GUI
     {
         JFrame frame = new JFrame("Course Catalogue");
         JPanel panel = new JPanel();
-        
-        //Remove this later
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JTextArea textArea = new JTextArea(20, 40);
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         
         //Test code
         for (int i = 0; i < 100; i++)
             textArea.append(" Put list of all courses here...\n");
         
-        textArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
         panel.add(scrollPane);
         frame.add(panel);
         frame.setSize(500, 375);
@@ -77,23 +73,26 @@ public class GUI
     public void displayStudentCourses(String s)
     {
         JFrame frame = new JFrame("Enrolled Course(s)");
-        JPanel panel = new JPanel();
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        JPanel titlePanel = new JPanel();
+        JPanel textPanel = new JPanel();
+        JLabel label = new JLabel("Student Name: Student ID: ");
         
-        //Remove this later
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JTextArea textArea = new JTextArea(20, 40);
+        JTextArea textArea = new JTextArea(17, 40);
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         
         //Test code
         for (int i = 0; i < 100; i++)
             textArea.append(" Student courses here...\n");
         
-        textArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-        panel.add(scrollPane);
-        frame.add(panel);
+        textPanel.add(scrollPane);
+        titlePanel.add(label);
+        mainPanel.add(titlePanel, "North");
+        mainPanel.add(textPanel, "Center");
+        
+        frame.add(mainPanel);
         frame.setSize(500, 375);
         frame.setResizable(false); 
         frame.setVisible(true);
