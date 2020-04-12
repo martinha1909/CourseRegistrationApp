@@ -41,7 +41,7 @@ public class GUI
         gbc.gridy = 5;
         panel.add(b5, gbc);
         
-        frame.add(panel, BorderLayout.CENTER);
+        frame.add(panel);
         frame.setSize(400, 300);
         frame.setResizable(false); 
         frame.setVisible(true);
@@ -86,7 +86,7 @@ public class GUI
         
         //Test code
         for (int i = 0; i < 100; i++)
-            textArea.append(" Put list of student enrolled courses here...\n");
+            textArea.append(" Student courses here...\n");
         
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
