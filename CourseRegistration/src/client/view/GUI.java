@@ -7,7 +7,7 @@ public class GUI
 
     public void displayMenu()
     {
-        JFrame frame = new JFrame("Course Registration");
+        JFrame frame = new JFrame("Course Registration App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         JLabel label = new JLabel("Please select an option:");
@@ -54,6 +54,8 @@ public class GUI
     {
         JFrame frame = new JFrame("Course Catalogue");
         JPanel panel = new JPanel();
+        
+        //Remove this later
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JTextArea textArea = new JTextArea(20, 40);
@@ -80,7 +82,7 @@ public class GUI
     }
 
     /**
-     * Test code
+     * Driver code
      * Remove when done
      * @param args
      */
