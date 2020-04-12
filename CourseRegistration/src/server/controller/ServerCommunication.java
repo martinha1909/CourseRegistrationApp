@@ -1,4 +1,5 @@
-package server;
+package server.controller;
+import server.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
