@@ -48,7 +48,7 @@ public class ServerCommunication {
 						
 					case 2:
 						
-						theLogic.addStudentCourses(word[0],word[1],word[2]);
+						theLogic.addStudentCourses(word[0],word[1],word[2],word[3]);
 						break;
 						
 					case 3:
