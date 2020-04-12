@@ -7,23 +7,23 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class RegistrationApp {
-	private Student student;
+	private ArrayList <Student> students;
 	private Course theCourse;
 	private CourseCatalogue cat;
 	private PrintWriter socketOut;
-	private BufferedReader socketIn;
 	private Socket theSocket;
 	
 	RegistrationApp(Socket s)
 	{
 		theSocket = s;
 		try {
-			socketIn = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
 			socketOut = new PrintWriter(theSocket.getOutputStream());
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
-		student = new Student("Martin", 30068529);
+		students.add(new Student("Martin", 30068529));
+		students.add(new Student("Ayush", 12345678));
+		students.add(new Student("Duan", 87654321));
 		cat = new CourseCatalogue();
 	}
 	
@@ -37,70 +37,91 @@ public class RegistrationApp {
 		}
 		else
 		{
-			sendString("Sorry we can't find this course in our system. ");
+			sendString("Sorry we can't find this course in our system. \n");
 		}
-		sendString("\n");
 	}
 	
 	public void viewAllCourses()
 	{
-		sendString(cat.toString());
-		sendString("\n");
+		sendString(cat.toString() + "\n");
 	}
 	
-	public void addStudentCourses(String courseName, int courseNum)
+	public void addStudentCourses(String StudentId, String courseName, int courseNum,int secotion)
 	{
+		int id = Integer.parseInt(StudentId);
+
+		Iterator k = students.iterator();
+		Registration t = new Registration();
+
+		int i = 0;
+		while(k.hasNext() && i < students.size())
+		{
+			if(students.get(i).studentId == id)
+			{
+				Student temp = students.get(i);
+			}
+		}
+
+
 		theCourse = cat.searchCat(courseName, courseNum);
 		if(theCourse!=null)
 		{
-			ArrayList<CourseOffering> offList = theCourse.getOfferingList();
-			sendString("Which offering would you like to choose? ");
-			for(int i=0; i<offList.size(); i++)
-			{
-				sendString(i+1 + ". " + offList.get(i).toString());
-				sendString("\n");
-			}
-//			try {
-//				int choice = Integer.parseInt(socketIn.readLine());
-//				Registration rg;
-//				switch(choice)
-//				{
-//				case 1:
-//					rg = new Registration(student, theCourse.getCourseOfferingAt(0));
-//					break;
-//				case 2:
-//					rg = new Registration(student, theCourse.getCourseOfferingAt(1));
-//					break;
-//				case 3:
-//					rg = new Registration(student, theCourse.getCourseOfferingAt(2));
-//				}
-				student.printAllStudentCourses(theSocket);
-				sendString("\n");
-			sendString("\n");
-//			} catch (NumberFormatException | IOException e) {
-//				e.printStackTrace();
-//			}
+			
+			t.completeRegistration(temp,theCourse.getCourseOfferingAt(section-1));
+			sendString("Registration completed");
 		}
+		else
+		{
+			sendString("Could not register to specified course, try again");
+		}
+
 	}
 	
-	public void removeStudentCourses(int choice)
+	public void removeStudentCourses(String StudentId, int choice)
 	{
-		/**
-		 * This line should be in the server right before this function is called:
-		 * sendString("Which course would you like to remove? ");
-		 */
-		student.printAllStudentCourses(theSocket);
-		if(student.getOfferingListSize()!=0)
+
+		int id = Integer.parseInt(StudentId);
+
+		Iterator k = students.iterator();
+
+		int i = 0;
+		while(k.hasNext() && i < students.size())
 		{
-			Registration rg = new Registration(student, student.getOfferingList().get(choice-1), "remove");
+			if(students.get(i).studentId == id)
+			{
+				Student temp = students.get(i);
+			}
+		}
+
+		temp.printAllStudentCourses(theSocket);
+		if(temp.getOfferingListSize()!=0)
+		{
+			Registration rg = new Registration(temp, temp.getOfferingList().get(choice-1), "remove");
 			sendString("Operation succedded! ");
 		}
-		sendString("\n");
+		else
+		{
+			sendString("The student is not taking this course");
+		}
+		
 	}
 	
-	public void viewAllStudentCourses() 
+	public void viewAllStudentCourses(String StudentId) 
 	{
-		student.printAllStudentCourses(theSocket);
+		int id = Integer.parseInt(StudentId);
+
+		Iterator k = students.iterator();
+
+		int i = 0;
+		while(k.hasNext() && i < students.size())
+		{
+			if(students.get(i).studentId == id)
+			{
+				Student temp = students.get(i);
+			}
+		}
+		
+		temp.printAllStudentCourses(theSocket);
 	}
 	
 	private void sendString(String s) {
