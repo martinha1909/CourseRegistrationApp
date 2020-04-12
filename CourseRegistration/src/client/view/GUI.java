@@ -47,23 +47,31 @@ public class GUI
         frame.setSize(400, 300);
         frame.setResizable(false); 
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
 
     public void displayCatalogue()
     {
         JFrame frame = new JFrame("Course Catalogue");
         JPanel panel = new JPanel();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JTextArea textArea = new JTextArea(20, 50);
+        JTextArea textArea = new JTextArea(20, 40);
+        
+        //Test code
+        for (int i = 0; i < 100; i++)
+            textArea.append(" Put list of all courses here...\n");
+        
         textArea.setEditable(false);
-        JScrollPane scroll = new JScrollPane(textArea);
-        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        panel.add(scroll);
+        panel.add(scrollPane);
         frame.add(panel);
-        frame.setSize(700, 375);
+        frame.setSize(500, 375);
         frame.setResizable(false); 
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
     
     public void displayStudentCourses()
