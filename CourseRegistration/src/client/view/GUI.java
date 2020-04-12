@@ -3,9 +3,7 @@ import javax.swing.*;
 
 public class GUI
 {    
-    public GUI() {}
-
-    public void displayMenu()
+    public GUI()
     {
         JFrame frame = new JFrame("Course Registration App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,7 +48,7 @@ public class GUI
         frame.setLocationRelativeTo(null);
     }
 
-    public void displayCatalogue()
+    public void displayCatalogue(String s)
     {
         JFrame frame = new JFrame("Course Catalogue");
         JPanel panel = new JPanel();
@@ -76,7 +74,7 @@ public class GUI
         frame.setLocationRelativeTo(null);
     }
     
-    public void displayStudentCourses()
+    public void displayStudentCourses(String s)
     {
         JFrame frame = new JFrame("Enrolled Course(s)");
         JPanel panel = new JPanel();
@@ -110,8 +108,7 @@ public class GUI
     public static void main(String[] args)
     {
         GUI myGUI = new GUI();
-        myGUI.displayMenu();
-        myGUI.displayCatalogue();
-        myGUI.displayStudentCourses();
+        myGUI.displayCatalogue("");
+        myGUI.displayStudentCourses("");
     }
 }
