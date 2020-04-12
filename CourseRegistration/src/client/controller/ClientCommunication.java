@@ -37,12 +37,14 @@ public class ClientCommunication {
 			try
 			{
 				line = theInput.buttonPressed();
-			
+				
+				String [] temp = line.split(",");
+						
 				socketOut.println(line);
 			
 				response = socketIn.readLine();
 			
-				theInput.sendResponse(response);
+				theInput.sendResponse(response,temp[temp.length-1]);
 				
 			}catch(IOException e)
 			{
