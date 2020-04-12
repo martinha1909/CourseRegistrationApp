@@ -1,4 +1,5 @@
-package client;
+package client.controller;
+import client.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
