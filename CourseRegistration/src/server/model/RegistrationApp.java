@@ -1,4 +1,5 @@
 package server.model;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,7 +14,7 @@ public class RegistrationApp {
 	private PrintWriter socketOut;
 	private Socket theSocket;
 	
-	RegistrationApp(Socket s)
+	public RegistrationApp(Socket s)
 	{
 		theSocket = s;
 		try {
