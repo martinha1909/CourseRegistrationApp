@@ -88,7 +88,7 @@ public class RegistrationApp {
 		int i = 0;
 		while(k.hasNext() && i < students.size())
 		{
-			if(students.get(i).studentId == id)
+			if(students.get(i).getStudentId == id)
 			{
 				Student temp = students.get(i);
 			}
