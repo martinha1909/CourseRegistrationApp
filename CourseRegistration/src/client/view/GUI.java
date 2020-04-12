@@ -48,6 +48,20 @@ public class GUI
         frame.setLocationRelativeTo(null);
     }
 
+    public void displayMessageWindow(String frameName, String message)
+    {
+        JFrame frame = new JFrame(frameName);
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel label = new JLabel(message);
+
+        panel.add(label);
+        frame.add(panel);
+        frame.setSize(400, 200);
+        frame.setResizable(false); 
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+    }   
+
     public void displayCatalogue(String s)
     {
         JFrame frame = new JFrame("Course Catalogue");
@@ -109,5 +123,6 @@ public class GUI
         GUI myGUI = new GUI();
         myGUI.displayCatalogue("");
         myGUI.displayStudentCourses("John Smith", "12345678");
+        myGUI.displayMessageWindow("Name of frame goes here", "Pass whatever string you want here...");
     }
 }
