@@ -93,19 +93,20 @@ public class GUICommunicator {
 
 	public void sendResponse(String response,String number) {
 		
+		
 		int n = Integer.parseInt(number);
 		
 		if(n == 1)
 		{
-			
+			theGUI.displayMessageWindow("SearchResult",response);
 		}
 		else if(n == 2)
 		{
-			
+			theGUI.displayMessageWindow("RemoveResult",response);
 		}
 		else if(n == 3)
 		{
-			
+			theGUI.displayMessageWindow("RemoveResult",response);
 		}
 		else if(n == 4)
 		{
@@ -119,6 +120,7 @@ public class GUICommunicator {
 		
 			
 	}
+
 
 
 	
