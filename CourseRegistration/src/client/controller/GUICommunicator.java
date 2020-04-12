@@ -42,11 +42,11 @@ public class GUICommunicator {
 				JPanel p = new JPanel();
 				
 				String studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
-				String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to search for:");
-				String courseNumber = JOptionPane.showInputDialog(p,"Enter the number of the course you want to search for:");
+				String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to enroll into:");
+				String courseNumber = JOptionPane.showInputDialog(p,"Enter the number of the course you want to enroll into:");
+				String section = JOptionPane.showInputDialog(p,"Enter the section you want to enroll into:");
 				
-				
-				sending = studentId + "," courseName + "," + courseNumber + ",2";	
+				sending = studentId + "," courseName + "," + courseNumber + "," + section + ",2";	
 			}
 				
 		});
@@ -59,7 +59,7 @@ public class GUICommunicator {
 				JPanel p = new JPanel();
 				
 				String studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
-				String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to search for:");
+				String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to remove:");
 				
 				
 				sending = studentId + "," + courseName + ",3";	
