@@ -1,5 +1,6 @@
 package server.controller;
 import server.*;
+import server.model.RegistrationApp;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,18 +46,19 @@ public class ServerCommunication {
 				switch(Integer.parseInt(word[word.length-1]))
 				{
 					case 1:
-						
-						theLogic.searchCatalogueCourses(word[0],word[1]);
+						int courseNum = Integer.parseInt(word[1]);
+						theLogic.searchCatalogueCourses(word[0], courseNum);
 						break;
 						
 					case 2:
-						
-						theLogic.addStudentCourses(word[0],word[1],word[2],word[3]);
+						int num = Integer.parseInt(word[2]);
+						int section = Integer.parseInt(word[3]);
+						theLogic.addStudentCourses(word[0],word[1], num, section);
 						break;
 						
 					case 3:
-						
-						theLogic.removeStudentCourses(word[0]);
+						int choice = Integer.parseInt(word[1]);
+						theLogic.removeStudentCourses(word[0], choice);
 						break;
 						
 					case 4:

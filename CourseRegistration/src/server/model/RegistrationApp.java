@@ -49,38 +49,33 @@ public class RegistrationApp {
 		sendString(cat.toString() + "\n");
 	}
 	
-	public void addStudentCourses(String StudentId, String courseName, int courseNum,int secotion)
+	public void addStudentCourses(String StudentId, String courseName, int courseNum,int section)
 	{
 		int id = Integer.parseInt(StudentId);
 
 		Iterator k = students.iterator();
-		for(int j=0; j<students.size(); j++)
-		{
-			if(students.get(j).getStudentId() == id)
-				Registration t = new Registration(students.get(j));
-		}
 		int i = 0;
-		while(k.hasNext() && i < students.size())
-		{
-			if(students.get(i).getStudentId() == id)
+			Student temp;
+			while(k.hasNext() && i < students.size())
 			{
-				Student temp = students.get(i);
+				if(students.get(i).getStudentId() == id)
+				{
+					Registration t = new Registration(students.get(i));
+					temp = students.get(i);
+					theCourse = cat.searchCat(courseName, courseNum);
+					if(theCourse!=null)
+					{
+					
+						t.completeRegistration(temp,theCourse.getCourseOfferingAt(section-1));
+						sendString("Registration completed");
+					}
+					else
+					{
+						sendString("Could not register to specified course, try again");
+					}
+				}
+				i++;
 			}
-		}
-
-
-		theCourse = cat.searchCat(courseName, courseNum);
-		if(theCourse!=null)
-		{
-			
-			t.completeRegistration(temp,theCourse.getCourseOfferingAt(section-1));
-			sendString("Registration completed");
-		}
-		else
-		{
-			sendString("Could not register to specified course, try again");
-		}
-
 	}
 	
 	public void removeStudentCourses(String StudentId, int choice)
@@ -93,23 +88,22 @@ public class RegistrationApp {
 		int i = 0;
 		while(k.hasNext() && i < students.size())
 		{
-			if(students.get(i).getStudentId == id)
+			if(students.get(i).getStudentId() == id)
 			{
 				Student temp = students.get(i);
+				temp.printAllStudentCourses(theSocket);
+				if(temp.getOfferingListSize()!=0)
+				{
+					Registration rg = new Registration(temp, temp.getOfferingList().get(choice-1), "remove");
+					sendString("Operation succedded! ");
+				}
+				else
+				{
+					sendString("The student is not taking this course");
+				}
 			}
+			i++;
 		}
-
-		temp.printAllStudentCourses(theSocket);
-		if(temp.getOfferingListSize()!=0)
-		{
-			Registration rg = new Registration(temp, temp.getOfferingList().get(choice-1), "remove");
-			sendString("Operation succedded! ");
-		}
-		else
-		{
-			sendString("The student is not taking this course");
-		}
-		
 	}
 	
 	public void viewAllStudentCourses(String StudentId) 
@@ -121,13 +115,13 @@ public class RegistrationApp {
 		int i = 0;
 		while(k.hasNext() && i < students.size())
 		{
-			if(students.get(i).studentId == id)
+			if(students.get(i).getStudentId() == id)
 			{
 				Student temp = students.get(i);
+				temp.printAllStudentCourses(theSocket);
 			}
+			i++;
 		}
-		
-		temp.printAllStudentCourses(theSocket);
 	}
 	
 	private void sendString(String s) {
