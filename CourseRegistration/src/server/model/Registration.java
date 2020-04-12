@@ -4,6 +4,9 @@ public class Registration {
 	private CourseOffering theOffering;
 	private char grade;
 	
+	Registration(Student student){
+		theStudent = student;
+	}
 	Registration(Student student, CourseOffering offering)
 	{
 		theStudent = student;

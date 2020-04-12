@@ -16,6 +16,7 @@ public class RegistrationApp {
 	
 	public RegistrationApp(Socket s)
 	{
+		students = new ArrayList<Student>();
 		theSocket = s;
 		try {
 			socketOut = new PrintWriter(theSocket.getOutputStream());
@@ -52,12 +53,15 @@ public class RegistrationApp {
 		int id = Integer.parseInt(StudentId);
 
 		Iterator k = students.iterator();
-		Registration t = new Registration();
-
+		for(int j=0; j<students.size(); j++)
+		{
+			if(students.get(j).getStudentId() == id)
+				Registration t = new Registration(students.get(j));
+		}
 		int i = 0;
 		while(k.hasNext() && i < students.size())
 		{
-			if(students.get(i).studentId == id)
+			if(students.get(i).getStudentId() == id)
 			{
 				Student temp = students.get(i);
 			}
