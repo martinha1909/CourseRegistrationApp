@@ -1,6 +1,10 @@
 package client.view;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 public class GUI
@@ -11,6 +15,7 @@ public class GUI
     private JButton b3;
     private JButton b4;
     private JButton b5;
+    public ArrayList <String> sending  = new ArrayList <String>();
     
     public GUI(String name)
     {
@@ -36,7 +41,7 @@ public class GUI
         panel.add(label, gbc);
         
         gbc.gridy = 1;
-        panel.add(getB1(), gbc);
+        panel.add(b1, gbc);
        
         gbc.gridy = 2;
         panel.add(b2, gbc);
@@ -55,6 +60,86 @@ public class GUI
         frame.setResizable(false); 
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
+        listeners();
+    }
+
+    private void listeners() {
+        b1.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                JFrame f = new JFrame();
+                JPanel p = new JPanel();
+                
+                String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to search for:");
+                String courseNumber = JOptionPane.showInputDialog(p,"Enter the number of the course you want to search for:");
+                
+                sending.add(courseName + "," + courseNumber + ",1");
+                
+            }
+                
+        });
+        
+        b2.addActionListener(new ActionListener() {
+
+            
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                JFrame f = new JFrame();
+                JPanel p = new JPanel();
+                
+                String studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
+                String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to enroll in:");
+                String courseNumber = JOptionPane.showInputDialog(p,"Enter the number of the course you want to enroll in:");
+                String section = JOptionPane.showInputDialog(p,"Enter the section you want to enroll in:");
+                
+                sending.add(studentId + "," + courseName + ",3");   
+            }
+            
+                
+        });
+        
+        b3.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                JFrame f = new JFrame();
+                JPanel p = new JPanel();
+                
+                String studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
+                String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to remove:");
+                
+                
+                sending.add(studentId + "," + courseName + ",3");   
+            }
+                
+        });
+        
+        b4.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                
+                
+                sending.add("4");   
+            }
+                
+        });
+        
+        b5.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                JFrame f = new JFrame();
+                JPanel p = new JPanel();
+                
+                String studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
+                sending.add(studentId + ",5");  
+            }
+                
+        });
+
+        
     }
 
     public void displayMessageWindow(String frameName, String message)
@@ -138,21 +223,5 @@ public class GUI
 //        myGUI.displayMessageWindow("Name of frame goes here", "Pass whatever string you want here...");
 //    }
 
-    public JButton getB1() {
-        return b1;
-    }
-    public JButton getB2() {
-        return b2;
-    }
-    public JButton getB3() {
-        return b3;
-    }
-    public JButton getB4() {
-        return b4;
-    }
-    public JButton getB5() {
-        return b5;
-    }
-
     
-}
+    
