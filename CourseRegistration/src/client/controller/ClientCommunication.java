@@ -21,6 +21,8 @@ public class ClientCommunication {
 			theInput = new GUICommunicator();
 			socketIn = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
 			socketOut = new PrintWriter (theSocket.getOutputStream(),true);
+			
+			System.out.println("Connected to server");
 		}catch(IOException e)
 		{
 			System.err.println("Error!!!");
@@ -37,9 +39,10 @@ public class ClientCommunication {
 		{
 			try
 			{
-				System.out.println("O");
-				if(theInput.theGUI.sending.size() != 0)
+				System.out.println("Waiting");
+				while(theInput.buttonPressed())
 				{
+					
 					line = theInput.result();	
 					
 					String [] temp = line.split(",");
@@ -47,8 +50,15 @@ public class ClientCommunication {
 					socketOut.println(line);
 					response = socketIn.readLine();
 					System.out.println(response);
+					if(response.contentEquals("end"))
+					{
+						theInput.theGUI.pressed = false;
+						theInput.sendResponse(response,temp[temp.length-1]);
+						break;
+					}
 
 					theInput.sendResponse(response,temp[temp.length-1]);
+					
 				}
 					
 			}catch(IOException e)
