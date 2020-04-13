@@ -20,7 +20,7 @@ public class ClientCommunication {
 			theSocket = new Socket(serverName,portNumber);
 			theInput = new GUICommunicator();
 			socketIn = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
-			socketOut = new PrintWriter (theSocket.getOutputStream());
+			socketOut = new PrintWriter (theSocket.getOutputStream(),true);
 		}catch(IOException e)
 		{
 			System.err.println("Error!!!");
@@ -33,27 +33,24 @@ public class ClientCommunication {
 		String line = "";
 		
 		String response = "";
-		
 		while(true)
 		{
 			try
 			{
-				theInput.buttonPressed();
-				
-				if(theInput.sending != null)
+				System.out.println("O");
+				if(theInput.theGUI.sending.size() != 0)
 				{
-					line = theInput.result();
+					line = theInput.result();	
 					
 					String [] temp = line.split(",");
-							
+					
 					socketOut.println(line);
-				
 					response = socketIn.readLine();
-				
+					System.out.println(response);
+
 					theInput.sendResponse(response,temp[temp.length-1]);
 				}
-				
-				
+					
 			}catch(IOException e)
 			{
 				System.err.println("Error has occured");
