@@ -152,6 +152,7 @@ public class GUI
 
     public void displayMessageWindow(String message)
     {
+        
         if(!message.contentEquals("end"))
         {
             this.message += message + "\n";
@@ -160,10 +161,14 @@ public class GUI
         else
         {
             JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            JLabel label = new JLabel(this.message);
-            panel.add(label);
+            JTextArea textArea = new JTextArea(20,40);
+            textArea.setEditable(false);
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            textArea.append(this.message);
+            panel.add(scrollPane);
             result.add(panel);
-            result.setSize(400, 200);
+            result.setSize(500, 400);
             result.setResizable(false); 
             result.setVisible(true);
             result.setLocationRelativeTo(null);
