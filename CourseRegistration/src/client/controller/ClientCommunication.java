@@ -1,5 +1,4 @@
 package client.controller;
-import client.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,15 +38,21 @@ public class ClientCommunication {
 		{
 			try
 			{
-				line = theInput.buttonPressed();
+				theInput.buttonPressed();
 				
-				String [] temp = line.split(",");
-						
-				socketOut.println(line);
-			
-				response = socketIn.readLine();
-			
-				theInput.sendResponse(response,temp[temp.length-1]);
+				if(theInput.sending != null)
+				{
+					line = theInput.result();
+					
+					String [] temp = line.split(",");
+							
+					socketOut.println(line);
+				
+					response = socketIn.readLine();
+				
+					theInput.sendResponse(response,temp[temp.length-1]);
+				}
+				
 				
 			}catch(IOException e)
 			{
