@@ -43,17 +43,19 @@ public class Student {
 			if(offeringListSize!=0)
 			{
 				socketOut.println("Here are your courses: ");
+				String sender = this.studentName + "," + this.studentId + ",";
 				while(iterator.hasNext() && i<offeringListSize)
 				{
 					int temp = i+1;
-					socketOut.println(temp + ": " + offeringList.get(i));
-					socketOut.println();
+					sender += temp + ": " + offeringList.get(i) + "\n";
 					i++;
 				}	
-				socketOut.println();
+					sender += ",";
+					
+					socketOut.println(sender);
 			}
 			else
-				socketOut.println(studentName + " currently has no courses. ");
+				socketOut.println(studentName + "," + studentId +", currently has no courses. ");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
