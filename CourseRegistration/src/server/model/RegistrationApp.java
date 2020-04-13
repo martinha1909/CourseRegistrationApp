@@ -72,6 +72,7 @@ public class RegistrationApp {
 			{
 				temp = students.get(i);
 			}
+			i++;
 		}
 
 
@@ -105,6 +106,7 @@ public class RegistrationApp {
 			{
 				temp = students.get(i);
 			}
+			i++;
 		}
 
 		temp.printAllStudentCourses(theSocket);
@@ -134,6 +136,7 @@ public class RegistrationApp {
 			{
 				temp = students.get(i);
 			}
+			i++;
 		}
 		
 		
