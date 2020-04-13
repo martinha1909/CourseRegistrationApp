@@ -39,7 +39,7 @@ public class ClientCommunication {
 		{
 			try
 			{
-				System.out.println("Waiting");
+				System.out.print("");
 				while(theInput.buttonPressed())
 				{
 					
@@ -49,7 +49,6 @@ public class ClientCommunication {
 					
 					socketOut.println(line);
 					response = socketIn.readLine();
-					System.out.println(response);
 					if(response.contentEquals("end"))
 					{
 						theInput.theGUI.pressed = false;
