@@ -97,7 +97,7 @@ public class GUI
                 String courseNumber = JOptionPane.showInputDialog(p,"Enter the number of the course you want to enroll in:");
                 String section = JOptionPane.showInputDialog(p,"Enter the section you want to enroll in:");
                 
-                sending.add(studentId + "," + courseName + ",3");
+                sending.add(studentId + "," + courseName + ",2");
                 pressed = true;
             }
             
