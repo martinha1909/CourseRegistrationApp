@@ -64,7 +64,7 @@ public class GUI
         frame.setLocationRelativeTo(null);
     }   
 
-    public void displayCatalogue(String s)
+    public void displayCatalogue(String[] allCourseList)
     {
         JFrame frame = new JFrame("Course Catalogue");
         JPanel panel = new JPanel();
@@ -74,9 +74,10 @@ public class GUI
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         
-        //Test code
-        for (int i = 0; i < 100; i++)
-            textArea.append(" Put list of all courses here...\n");
+        for (int i = 0; i < allCourseList.length; i++)
+        {
+            textArea.append(" " + allCourseList[i] + "\n");
+        }
         
         panel.add(scrollPane);
         frame.add(panel);
@@ -86,7 +87,7 @@ public class GUI
         frame.setLocationRelativeTo(null);
     }
     
-    public void displayStudentCourses(String studentName, String studentID)
+    public void displayStudentCourses(String studentName, String studentID, String[] studentCourseList)
     {
         JFrame frame = new JFrame("Enrolled Course(s)");
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -99,9 +100,11 @@ public class GUI
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         
-        //Test code
-        for (int i = 0; i < 100; i++)
-            textArea.append(" Student courses here...\n");
+        
+        for (int i = 0; i < studentCourseList.length; i++)
+        {
+            textArea.append(" " + studentCourseList[i] + "\n");
+        }
         
         textPanel.add(scrollPane);
         titlePanel.add(label);
@@ -123,8 +126,11 @@ public class GUI
     public static void main(String[] args)
     {
         GUI myGUI = new GUI();
-        myGUI.displayCatalogue("");
-        myGUI.displayStudentCourses("John Smith", "12345678");
+        String[] studentCourseList = {"MATH 271", "ENEL 327", "ENCM 369"};
+        String[] allCourseList = {"MATH 271", "ENEL 327", "ENCM 369", "CPSC 319", "ENSF 409", "ENGG 200"};
+        
+        myGUI.displayCatalogue(allCourseList);
+        myGUI.displayStudentCourses("John Smith", "12345678", studentCourseList);
         myGUI.displayMessageWindow("Name of frame goes here", "Pass whatever string you want here...");
     }
 }
