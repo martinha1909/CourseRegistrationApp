@@ -38,6 +38,7 @@ public class RegistrationApp {
 			sendString("Course found: ");
 			sendString(theCourse.getCourseOfferingAt(0).toString());
 			sendString(theCourse.getCourseOfferingAt(1).toString());
+			sendString("end");
 		}
 		else
 		{
