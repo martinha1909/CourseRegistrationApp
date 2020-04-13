@@ -38,8 +38,7 @@ public class GUICommunicator {
 		}
 		else if(n == 4)
 		{
-			String [] word = response.split(",");
-			theGUI.displayCatalogue(word);
+			theGUI.displayCatalogue(response);
 		}
 		
 		else if(n == 5)
@@ -54,10 +53,6 @@ public class GUICommunicator {
 	public String result() {
 		
 		return theGUI.sending.get(theGUI.sending.size()-1);
-	}
-
-	public void stall() {
-		
 	}
 
 
