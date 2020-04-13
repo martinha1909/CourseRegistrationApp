@@ -61,7 +61,6 @@ public class CourseCatalogue {
 		String st = "All courses in the catalogue: \n";
 		for (Course c : courseList) {
 			st += c.toString();  //This line invokes the toString() method of Course
-			st += "\n";
 		}
 		return st;
 	}
