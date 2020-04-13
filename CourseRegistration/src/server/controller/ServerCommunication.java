@@ -37,28 +37,29 @@ public class ServerCommunication {
 		
 		while(true)
 		{
+			
 			try
 			{
 				line = socketIn.readLine();
-				
 				String[] word = line.split(",");
-				
+			
+			while(Integer.parseInt(word[word.length-1])<= 5)
+			{
 				switch(Integer.parseInt(word[word.length-1]))
 				{
 					case 1:
-						int courseNum = Integer.parseInt(word[1]);
-						theLogic.searchCatalogueCourses(word[0], courseNum);
+						
+						theLogic.searchCatalogueCourses(word[0],word[1]);
 						break;
 						
 					case 2:
-						int num = Integer.parseInt(word[2]);
-						int section = Integer.parseInt(word[3]);
-						theLogic.addStudentCourses(word[0],word[1], num, section);
+						
+						theLogic.addStudentCourses(word[0],word[1],word[2],word[3]);
 						break;
 						
 					case 3:
-						int choice = Integer.parseInt(word[1]);
-						theLogic.removeStudentCourses(word[0], choice);
+						
+						theLogic.removeStudentCourses(word[0],word[1]);
 						break;
 						
 					case 4:
@@ -72,6 +73,7 @@ public class ServerCommunication {
 						break;
 					
 				}
+			}
 			} catch (IOException e)
 			{
 				System.err.println("ERROR!");
