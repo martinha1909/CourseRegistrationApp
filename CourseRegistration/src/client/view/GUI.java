@@ -7,55 +7,60 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-public class GUI {
-
-    private JButton b1;
-    private JButton b2;
-    private JButton b3;
-    private JButton b4;
-    private JButton b5;
-    public ArrayList<String> sending = new ArrayList<String>();
-
-    public GUI(String name) {
+public class GUI
+{    
+    
+    public JButton b1;
+    public JButton b2;
+    public JButton b3;
+    public JButton b4;
+    public JButton b5;
+    public ArrayList <String> sending  = new ArrayList <String>();
+    public boolean pressed;
+    private JFrame result = new JFrame("RESULT");
+    private String message = "";
+    
+    public GUI(String name)
+    {
         JFrame frame = new JFrame(name);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        
         JLabel label = new JLabel("Please select an option:");
-        b1 = new JButton("Search catalogue courses.");
-        b2 = new JButton("Add course to student courses.");
-        b3 = new JButton("Remove course from student courses.");
-        b4 = new JButton("View all courses in catalogue.");
-        b5 = new JButton("View all courses taken by student.");
+         b1 = new JButton("Search catalogue courses.");
+         b2 = new JButton("Add course to student courses.");
+         b3 = new JButton("Remove course from student courses.");
+         b4 = new JButton("View all courses in catalogue.");
+         b5 = new JButton("View all courses taken by student.");
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 0, 5, 0);
-
-        // label.setHorizontalAlignment(JLabel.CENTER); //This centers the label
+        
+        //label.setHorizontalAlignment(JLabel.CENTER); //This centers the label
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(label, gbc);
-
+        
         gbc.gridy = 1;
         panel.add(b1, gbc);
-
+       
         gbc.gridy = 2;
         panel.add(b2, gbc);
 
         gbc.gridy = 3;
         panel.add(b3, gbc);
-
+        
         gbc.gridy = 4;
         panel.add(b4, gbc);
-
+        
         gbc.gridy = 5;
         panel.add(b5, gbc);
-
+        
         frame.add(panel);
         frame.setSize(400, 300);
-        frame.setResizable(false);
+        frame.setResizable(false); 
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         listeners();
@@ -68,91 +73,107 @@ public class GUI {
             public void actionPerformed(ActionEvent arg0) {
                 JFrame f = new JFrame();
                 JPanel p = new JPanel();
-
-                String courseName = JOptionPane.showInputDialog(p,
-                        "Enter the name of the course you want to search for:");
-                String courseNumber = JOptionPane.showInputDialog(p,
-                        "Enter the number of the course you want to search for:");
-
+                
+                String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to search for:");
+                String courseNumber = JOptionPane.showInputDialog(p,"Enter the number of the course you want to search for:");
+                
+                
                 sending.add(courseName + "," + courseNumber + ",1");
-
+                pressed = true;
             }
-
+                
         });
-
+        
         b2.addActionListener(new ActionListener() {
 
+            
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 JFrame f = new JFrame();
                 JPanel p = new JPanel();
-
-                String studentId = JOptionPane.showInputDialog(p, "Enter the student's id:");
-                String courseName = JOptionPane.showInputDialog(p,
-                        "Enter the name of the course you want to enroll in:");
-                String courseNumber = JOptionPane.showInputDialog(p,
-                        "Enter the number of the course you want to enroll in:");
-                String section = JOptionPane.showInputDialog(p, "Enter the section you want to enroll in:");
-
+                
+                String studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
+                String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to enroll in:");
+                String courseNumber = JOptionPane.showInputDialog(p,"Enter the number of the course you want to enroll in:");
+                String section = JOptionPane.showInputDialog(p,"Enter the section you want to enroll in:");
+                
                 sending.add(studentId + "," + courseName + ",3");
+                pressed = true;
             }
-
+            
+                
         });
-
+        
         b3.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 JFrame f = new JFrame();
                 JPanel p = new JPanel();
-
-                String studentId = JOptionPane.showInputDialog(p, "Enter the student's id:");
-                String courseName = JOptionPane.showInputDialog(p, "Enter the name of the course you want to remove:");
-
-                sending.add(studentId + "," + courseName + ",3");
+                
+                String studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
+                String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to remove:");
+                
+                
+                sending.add(studentId + "," + courseName + ",3");   
+                pressed = true;
             }
-
+                
         });
-
+        
         b4.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-
-                sending.add("4");
+                
+                
+                sending.add("4");   
+                pressed = true;
             }
-
+                
         });
-
+        
         b5.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 JFrame f = new JFrame();
                 JPanel p = new JPanel();
-
-                String studentId = JOptionPane.showInputDialog(p, "Enter the student's id:");
-                sending.add(studentId + ",5");
+                
+                String studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
+                sending.add(studentId + ",5");  
+                pressed = true;
             }
-
+                
         });
 
+        
     }
 
-    public void displayMessageWindow(String frameName, String message) {
-        JFrame frame = new JFrame(frameName);
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel label = new JLabel(message);
+    public void displayMessageWindow(String message)
+    {
+        if(!message.contentEquals("end"))
+        {
+            this.message += message + "\n";
+            
+        }
+        else
+        {
+            JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            JLabel label = new JLabel(this.message);
+            panel.add(label);
+            result.add(panel);
+            result.setSize(400, 200);
+            result.setResizable(false); 
+            result.setVisible(true);
+            result.setLocationRelativeTo(null);
+        }
+        
+   
+    }   
 
-        panel.add(label);
-        frame.add(panel);
-        frame.setSize(400, 200);
-        frame.setResizable(false);
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
-    }
-
-    public void displayCatalogue(String[] allCoursesList) {
+    public void displayCatalogue(String[] allCourseList)
+    {
         JFrame frame = new JFrame("Course Catalogue");
         JPanel panel = new JPanel();
 
@@ -160,19 +181,20 @@ public class GUI {
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-        for (int i = 0; i < allCoursesList.length; i++) {
-            textArea.append(" " + allCoursesList[i] + "\n");
+        
+        for (int i = 0; i < allCourseList.length; i++)
+        {
+            textArea.append(" " + allCourseList[i] + "\n");
         }
-
+        
         panel.add(scrollPane);
         frame.add(panel);
         frame.setSize(500, 375);
-        frame.setResizable(false);
+        frame.setResizable(false); 
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
-
+    
     public void displayStudentCourses(String studentName, String studentID, String studentCourseList)
     {
         JFrame frame = new JFrame("Enrolled Course(s)");
@@ -186,7 +208,10 @@ public class GUI {
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         
-        textArea.append(" " + studentCourseList);
+        
+      
+            textArea.append(" " + studentCourseList);
+        
         
         textPanel.add(scrollPane);
         titlePanel.add(label);
@@ -200,17 +225,20 @@ public class GUI {
         frame.setLocationRelativeTo(null);
     }
 
-/**
- * Driver code Remove when done
- * 
- * @param args
- */
-// public static void main(String[] args)
-// {
-// GUI myGUI = new GUI();
-// myGUI.displayCatalogue("");
-// myGUI.displayStudentCourses("John Smith", "12345678");
-// myGUI.displayMessageWindow("Name of frame goes here", "Pass whatever string
-// you want here...");
-// }
+
+    /**
+     * Driver code
+     * Remove when done
+     * @param args
+     */
+//    public static void main(String[] args)
+//    {
+//        GUI myGUI = new GUI();
+//        myGUI.displayCatalogue("");
+//        myGUI.displayStudentCourses("John Smith", "12345678");
+//        myGUI.displayMessageWindow("Name of frame goes here", "Pass whatever string you want here...");
+//    }
+
+    
+    
 }
