@@ -97,7 +97,7 @@ public class GUI
                 String courseNumber = JOptionPane.showInputDialog(p,"Enter the number of the course you want to enroll in:");
                 String section = JOptionPane.showInputDialog(p,"Enter the section you want to enroll in:");
                 
-                sending.add(studentId + "," + courseName + ",2");
+                sending.add(studentId + "," + courseName + "," + courseNumber + "," + section + ",2");
                 pressed = true;
             }
             
@@ -113,9 +113,11 @@ public class GUI
                 
                 String studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
                 String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to remove:");
+                String courseNumber = JOptionPane.showInputDialog(p,"Enter the number of the course you want to remove:");
+                String section = JOptionPane.showInputDialog(p,"Enter the section you want to remove:");
                 
-                
-                sending.add(studentId + "," + courseName + ",3");   
+                sending.add(studentId + "," + courseName + "," + courseNumber + "," + section + ",3");
+
                 pressed = true;
             }
                 
@@ -238,6 +240,8 @@ public class GUI
         frame.setLocationRelativeTo(null);
     }
 
+}
+
 
     /**
      * Driver code
@@ -254,4 +258,3 @@ public class GUI
 
     
     
-}

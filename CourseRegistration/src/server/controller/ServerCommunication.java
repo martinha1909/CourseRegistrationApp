@@ -71,8 +71,8 @@ public class ServerCommunication {
 						
 						theLogic.viewAllStudentCourses(word[0]);
 						break;
-					
 				}
+				word[word.length-1] = "6";
 			}
 			} catch (IOException e)
 			{

@@ -36,10 +36,12 @@ public class Student {
 	
 	public void printAllStudentCourses(Socket s)
 	{
+		
 		try {
-			PrintWriter socketOut = new PrintWriter(s.getOutputStream());
+			PrintWriter socketOut = new PrintWriter(s.getOutputStream(),true);
 			Iterator<CourseOffering> iterator = offeringList.iterator();
 			int i=0;
+			
 			if(offeringListSize!=0)
 			{
 				socketOut.println("Here are your courses: ");
@@ -53,9 +55,12 @@ public class Student {
 					sender += ",";
 					
 					socketOut.println(sender);
+					socketOut.println("end");
 			}
 			else
-				socketOut.println(studentName + "," + studentId +", currently has no courses. ");
+				
+				socketOut.println(studentName + "," + studentId +",currently has no courses.");
+				socketOut.println("end");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

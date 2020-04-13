@@ -43,8 +43,12 @@ public class GUICommunicator {
 		
 		else if(n == 5)
 		{
-			String [] word = response.split(",");
-			theGUI.displayStudentCourses(word[0],word[1],word[word.length-1]);
+			if(!response.contentEquals("end"))
+			{
+				String [] word = response.split(",");
+				theGUI.displayStudentCourses(word[0],word[1],word[word.length-1]);
+			}
+			
 		}
 		
 			

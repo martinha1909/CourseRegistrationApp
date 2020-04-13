@@ -43,12 +43,14 @@ public class RegistrationApp {
 		else
 		{
 			sendString("Sorry we can't find this course in our system. \n");
+			sendString("end");
 		}
 	}
 	
 	public void viewAllCourses()
 	{
 		sendString(cat.toString());
+		sendString("end");
 	}
 	
 	public void addStudentCourses(String StudentId, String courseName, String courseN,String sec)
@@ -75,17 +77,19 @@ public class RegistrationApp {
 			i++;
 		}
 
-
+		
 		theCourse = cat.searchCat(courseName, courseNum);
 		if(theCourse!=null)
 		{
 			
 			t.completeRegistration(temp,theCourse.getCourseOfferingAt(section-1));
 			sendString("Registration completed");
+			sendString("end");
 		}
 		else
 		{
 			sendString("Could not register to specified course, try again");
+			sendString("end");
 		}
 
 	}
@@ -138,7 +142,6 @@ public class RegistrationApp {
 			}
 			i++;
 		}
-		
 		
 		temp.printAllStudentCourses(theSocket);
 	}
