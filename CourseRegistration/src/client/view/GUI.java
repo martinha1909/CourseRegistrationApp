@@ -97,7 +97,7 @@ public class GUI
                 String courseNumber = JOptionPane.showInputDialog(p,"Enter the number of the course you want to enroll in:");
                 String section = JOptionPane.showInputDialog(p,"Enter the section you want to enroll in:");
                 
-                sending.add(studentId + "," + courseName + ",2");
+                sending.add(studentId + "," + courseName + ",3");
                 pressed = true;
             }
             
@@ -172,31 +172,41 @@ public class GUI
             result.setResizable(false); 
             result.setVisible(true);
             result.setLocationRelativeTo(null);
+            this.message = "";
         }
         
    
     }   
 
-    public void displayCatalogue(String allCourseList)
-    {
-        JFrame frame = new JFrame("Course Catalogue");
-        JPanel panel = new JPanel();
+      public void displayCatalogue(String allCourseList)
+        {
+          
+            if(!allCourseList.contentEquals("end"))
+            {
+                this.message += allCourseList + "\n";
+            }
+            else
+            {
+                 JPanel panel = new JPanel();
 
-        JTextArea textArea = new JTextArea(20, 40);
-        textArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        
+                    JTextArea textArea = new JTextArea(20, 40);
+                    textArea.setEditable(false);
+                    JScrollPane scrollPane = new JScrollPane(textArea);
+                    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                    
 
-            textArea.append(allCourseList);
-        
-        panel.add(scrollPane);
-        frame.add(panel);
-        frame.setSize(500, 375);
-        frame.setResizable(false); 
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
-    }
+                        textArea.append(this.message);
+                    
+                    panel.add(scrollPane);
+                    result.add(panel);
+                    result.setSize(500, 375);
+                    result.setResizable(false); 
+                    result.setVisible(true);
+                    result.setLocationRelativeTo(null);
+            }
+            
+           
+        }
     
     public void displayStudentCourses(String studentName, String studentID, String studentCourseList)
     {
