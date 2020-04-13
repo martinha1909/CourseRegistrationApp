@@ -30,8 +30,9 @@ public class RegistrationApp {
 		cat = new CourseCatalogue();
 	}
 	
-	public void searchCatalogueCourses(String courseName, int courseNum)
+	public void searchCatalogueCourses(String courseName, String courseN)
 	{
+		int courseNum = Integer.parseInt(courseN);
 		theCourse = cat.searchCat(courseName, courseNum);
 		if (theCourse != null) {
 			sendString("Course found: ");
@@ -46,64 +47,76 @@ public class RegistrationApp {
 	
 	public void viewAllCourses()
 	{
-		sendString(cat.toString() + "\n");
+		sendString(cat.toString());
 	}
 	
-	public void addStudentCourses(String StudentId, String courseName, int courseNum,int section)
+	public void addStudentCourses(String StudentId, String courseName, String courseN,String sec)
 	{
 		int id = Integer.parseInt(StudentId);
-
+		int courseNum = Integer.parseInt(courseN);
+		int section = Integer.parseInt(sec);
+		
+		Registration t = null;
 		Iterator k = students.iterator();
+		for(int j=0; j<students.size(); j++)
+		{
+			if(students.get(j).getStudentId() == id)
+				t = new Registration(students.get(j));
+		}
 		int i = 0;
-			Student temp;
-			while(k.hasNext() && i < students.size())
-			{
-				if(students.get(i).getStudentId() == id)
-				{
-					Registration t = new Registration(students.get(i));
-					temp = students.get(i);
-					theCourse = cat.searchCat(courseName, courseNum);
-					if(theCourse!=null)
-					{
-					
-						t.completeRegistration(temp,theCourse.getCourseOfferingAt(section-1));
-						sendString("Registration completed");
-					}
-					else
-					{
-						sendString("Could not register to specified course, try again");
-					}
-				}
-				i++;
-			}
-	}
-	
-	public void removeStudentCourses(String StudentId, int choice)
-	{
-
-		int id = Integer.parseInt(StudentId);
-
-		Iterator k = students.iterator();
-
-		int i = 0;
+		Student temp = null;
 		while(k.hasNext() && i < students.size())
 		{
 			if(students.get(i).getStudentId() == id)
 			{
-				Student temp = students.get(i);
-				temp.printAllStudentCourses(theSocket);
-				if(temp.getOfferingListSize()!=0)
-				{
-					Registration rg = new Registration(temp, temp.getOfferingList().get(choice-1), "remove");
-					sendString("Operation succedded! ");
-				}
-				else
-				{
-					sendString("The student is not taking this course");
-				}
+				temp = students.get(i);
 			}
-			i++;
 		}
+
+
+		theCourse = cat.searchCat(courseName, courseNum);
+		if(theCourse!=null)
+		{
+			
+			t.completeRegistration(temp,theCourse.getCourseOfferingAt(section-1));
+			sendString("Registration completed");
+		}
+		else
+		{
+			sendString("Could not register to specified course, try again");
+		}
+
+	}
+	
+	public void removeStudentCourses(String StudentId, String theChoice)
+	{
+
+		int choice = Integer.parseInt(theChoice);
+		int id = Integer.parseInt(StudentId);
+
+		Iterator k = students.iterator();
+
+		int i = 0;
+		Student temp = null;
+		while(k.hasNext() && i < students.size())
+		{
+			if(students.get(i).getStudentId() == id)
+			{
+				temp = students.get(i);
+			}
+		}
+
+		temp.printAllStudentCourses(theSocket);
+		if(temp.getOfferingListSize()!=0)
+		{
+			Registration rg = new Registration(temp, temp.getOfferingList().get(choice-1), "remove");
+			sendString("Operation succedded! ");
+		}
+		else
+		{
+			sendString("The student is not taking this course");
+		}
+		
 	}
 	
 	public void viewAllStudentCourses(String StudentId) 
@@ -113,15 +126,17 @@ public class RegistrationApp {
 		Iterator k = students.iterator();
 
 		int i = 0;
+		Student temp = null;
 		while(k.hasNext() && i < students.size())
 		{
 			if(students.get(i).getStudentId() == id)
 			{
-				Student temp = students.get(i);
-				temp.printAllStudentCourses(theSocket);
+				temp = students.get(i);
 			}
-			i++;
 		}
+		
+		
+		temp.printAllStudentCourses(theSocket);
 	}
 	
 	private void sendString(String s) {
