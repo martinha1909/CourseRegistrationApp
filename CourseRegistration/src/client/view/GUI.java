@@ -177,7 +177,7 @@ public class GUI
    
     }   
 
-    public void displayCatalogue(String[] allCourseList)
+    public void displayCatalogue(String allCourseList)
     {
         JFrame frame = new JFrame("Course Catalogue");
         JPanel panel = new JPanel();
@@ -187,10 +187,8 @@ public class GUI
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         
-        for (int i = 0; i < allCourseList.length; i++)
-        {
-            textArea.append(" " + allCourseList[i] + "\n");
-        }
+
+            textArea.append(allCourseList);
         
         panel.add(scrollPane);
         frame.add(panel);
