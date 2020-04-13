@@ -1,5 +1,5 @@
 package client.controller;
-import client.*;
+import client.view.GUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,17 +11,19 @@ import javax.swing.JPanel;
 public class GUICommunicator {
 
 	GUI theGUI;
+	public String sending;
 	
 	public GUICommunicator()
 	{
-		theGUI = new GUI("FRAME");
+		theGUI = new GUI("Course Registration App");
+		sending = "";
 	}
 
-	public String buttonPressed() {
+	public void buttonPressed() {
 		
-		String sending = "";
 		
-		theGUI.b1.addActionListener(new ActionListener() {
+		
+		theGUI.getB1().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -31,30 +33,33 @@ public class GUICommunicator {
 				String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to search for:");
 				String courseNumber = JOptionPane.showInputDialog(p,"Enter the number of the course you want to search for:");
 				
-				
-				sending = courseName + "," + courseNumber + ",1";	
+				System.out.println("I get here");
+				sending = courseName + "," + courseNumber + ",1";
+				System.out.println(sending);
 			}
 				
 		});
 		
-		theGUI.b2.addActionListener(new ActionListener() {
+		theGUI.getB2().addActionListener(new ActionListener() {
 
+			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				JFrame f = new JFrame();
 				JPanel p = new JPanel();
 				
 				String studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
-				String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to enroll into:");
-				String courseNumber = JOptionPane.showInputDialog(p,"Enter the number of the course you want to enroll into:");
-				String section = JOptionPane.showInputDialog(p,"Enter the section you want to enroll into:");
+				String courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to enroll in:");
+				String courseNumber = JOptionPane.showInputDialog(p,"Enter the number of the course you want to enroll in:");
+				String section = JOptionPane.showInputDialog(p,"Enter the section you want to enroll in:");
 				
-				sending = studentId + "," courseName + "," + courseNumber + "," + section + ",2";	
+				sending = studentId + "," + courseName + ",3";	
 			}
+			
 				
 		});
 		
-		theGUI.b3.addActionListener(new ActionListener() {
+		theGUI.getB3().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -70,7 +75,7 @@ public class GUICommunicator {
 				
 		});
 		
-		theGUI.b4.addActionListener(new ActionListener() {
+		theGUI.getB4().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -81,17 +86,18 @@ public class GUICommunicator {
 				
 		});
 		
-		theGUI.b5.addActionListener(new ActionListener() {
+		theGUI.getB5().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				JFrame f = new JFrame();
+				JPanel p = new JPanel();
 				
 				String studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
 				sending = studentId + ",5";	
 			}
 				
 		});
-		return sending;
 	}
 
 	public void sendResponse(String response,String number) {
@@ -113,15 +119,22 @@ public class GUICommunicator {
 		}
 		else if(n == 4)
 		{
-			theGUI.displayCatalogue(response);
+			String [] word = response.split(",");
+			theGUI.displayCatalogue(word);
 		}
 		
 		else if(n == 5)
 		{
-			theGUI.displayStudentCourses(response);
+			String [] word = response.split(",");
+			theGUI.displayStudentCourses(word[0],word[1],word[word.length-1]);
 		}
 		
 			
+	}
+
+	public String result() {
+		
+		return sending;
 	}
 
 
