@@ -26,15 +26,15 @@ public class GUICommunicator {
 		
 		if(n == 1)
 		{
-			theGUI.displayMessageWindow("SearchResult",response);
+			theGUI.displayMessageWindow(response);
 		}
 		else if(n == 2)
 		{
-			theGUI.displayMessageWindow("RemoveResult",response);
+			theGUI.displayMessageWindow(response);
 		}
 		else if(n == 3)
 		{
-			theGUI.displayMessageWindow("RemoveResult",response);
+			theGUI.displayMessageWindow(response);
 		}
 		else if(n == 4)
 		{
@@ -58,6 +58,17 @@ public class GUICommunicator {
 
 	public void stall() {
 		
+	}
+
+
+	public boolean buttonPressed() {
+		
+		if(theGUI.pressed == true)
+		{
+			return true;
+		}
+		else
+			return false;
 	}
 
 
