@@ -20,7 +20,7 @@ public class RegistrationApp {
 		students = new ArrayList<Student>();
 		theSocket = s;
 		try {
-			socketOut = new PrintWriter(theSocket.getOutputStream());
+			socketOut = new PrintWriter(theSocket.getOutputStream(),true);
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
