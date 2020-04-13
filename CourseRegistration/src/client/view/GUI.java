@@ -5,17 +5,24 @@ import javax.swing.*;
 
 public class GUI
 {    
-    public GUI()
+    
+    private JButton b1;
+    private JButton b2;
+    private JButton b3;
+    private JButton b4;
+    private JButton b5;
+    
+    public GUI(String name)
     {
-        JFrame frame = new JFrame("Course Registration App");
+        JFrame frame = new JFrame(name);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         JLabel label = new JLabel("Please select an option:");
-        JButton b1 = new JButton("Search catalogue courses.");
-        JButton b2 = new JButton("Add course to student courses.");
-        JButton b3 = new JButton("Remove course from student courses.");
-        JButton b4 = new JButton("View all courses in catalogue.");
-        JButton b5 = new JButton("View all courses taken by student.");
+         b1 = new JButton("Search catalogue courses.");
+         b2 = new JButton("Add course to student courses.");
+         b3 = new JButton("Remove course from student courses.");
+         b4 = new JButton("View all courses in catalogue.");
+         b5 = new JButton("View all courses taken by student.");
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -29,7 +36,7 @@ public class GUI
         panel.add(label, gbc);
         
         gbc.gridy = 1;
-        panel.add(b1, gbc);
+        panel.add(getB1(), gbc);
        
         gbc.gridy = 2;
         panel.add(b2, gbc);
@@ -87,7 +94,7 @@ public class GUI
         frame.setLocationRelativeTo(null);
     }
     
-    public void displayStudentCourses(String studentName, String studentID, String[] studentCourseList)
+    public void displayStudentCourses(String studentName, String studentID, String studentCourseList)
     {
         JFrame frame = new JFrame("Enrolled Course(s)");
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -101,10 +108,9 @@ public class GUI
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         
         
-        for (int i = 0; i < studentCourseList.length; i++)
-        {
-            textArea.append(" " + studentCourseList[i] + "\n");
-        }
+      
+            textArea.append(" " + studentCourseList);
+        
         
         textPanel.add(scrollPane);
         titlePanel.add(label);
@@ -118,19 +124,35 @@ public class GUI
         frame.setLocationRelativeTo(null);
     }
 
+
     /**
      * Driver code
      * Remove when done
      * @param args
      */
-    public static void main(String[] args)
-    {
-        GUI myGUI = new GUI();
-        String[] studentCourseList = {"MATH 271", "ENEL 327", "ENCM 369"};
-        String[] allCourseList = {"MATH 271", "ENEL 327", "ENCM 369", "CPSC 319", "ENSF 409", "ENGG 200"};
-        
-        myGUI.displayCatalogue(allCourseList);
-        myGUI.displayStudentCourses("John Smith", "12345678", studentCourseList);
-        myGUI.displayMessageWindow("Name of frame goes here", "Pass whatever string you want here...");
+//    public static void main(String[] args)
+//    {
+//        GUI myGUI = new GUI();
+//        myGUI.displayCatalogue("");
+//        myGUI.displayStudentCourses("John Smith", "12345678");
+//        myGUI.displayMessageWindow("Name of frame goes here", "Pass whatever string you want here...");
+//    }
+
+    public JButton getB1() {
+        return b1;
     }
+    public JButton getB2() {
+        return b2;
+    }
+    public JButton getB3() {
+        return b3;
+    }
+    public JButton getB4() {
+        return b4;
+    }
+    public JButton getB5() {
+        return b5;
+    }
+
+    
 }
