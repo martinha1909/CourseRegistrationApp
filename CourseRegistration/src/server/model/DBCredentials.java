@@ -1,3 +1,5 @@
+package server.model;
+
 public interface DBCredentials {
 	
 	//JDBC driver name and database URL
