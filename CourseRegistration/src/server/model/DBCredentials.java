@@ -1,4 +1,4 @@
-public interface IDBCredentials {
+public interface DBCredentials {
 	
 	//JDBC driver name and database URL
     static final String JDBC_DRIVER = "";  
@@ -7,5 +7,4 @@ public interface IDBCredentials {
     //Database credentials
     static final String USERNAME = "root";
     static final String PASSWORD = "ensf409";
-
 }
