@@ -1,8 +1,12 @@
 package server.model;
 import java.util.ArrayList;
 
-//This class is simulating a database for our
-//program
+/** 
+ * @author Ayush Chaudhari
+ * @author Duan Le
+ * @author Vu Ha
+ */
+
 public class DBManager {
 	
 	ArrayList <Course> courseList;
@@ -12,7 +16,6 @@ public class DBManager {
 	}
 
 	public ArrayList readFromDataBase() {
-		// TODO Auto-generated method stub
 		courseList.add(new Course ("ENGG", 233));
 		courseList.add(new Course ("ENSF", 409));
 		courseList.add(new Course ("PHYS", 259));

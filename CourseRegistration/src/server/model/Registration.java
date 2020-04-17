@@ -1,9 +1,18 @@
 package server.model;
+
+/** 
+ * @author Ayush Chaudhari
+ * @author Duan Le
+ * @author Vu Ha
+ */
 public class Registration {
 	private Student theStudent;
 	private CourseOffering theOffering;
 	private char grade;
 	
+	Registration(Student student){
+		theStudent = student;
+	}
 	Registration(Student student, CourseOffering offering)
 	{
 		theStudent = student;
@@ -17,7 +26,7 @@ public class Registration {
 		theStudent = student;
 		theOffering = offering;
 		theOffering.removeRegistration(this);
-		theStudent.removeCourse(offering);
+		theStudent.removeCourse(this);
 	}
 	void completeRegistration (Student st, CourseOffering of) {
 		theStudent = st;

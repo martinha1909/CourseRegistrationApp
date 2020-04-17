@@ -1,6 +1,12 @@
 package server.model;
 import java.util.ArrayList;
 
+
+/** 
+ * @author Ayush Chaudhari
+ * @author Duan Le
+ * @author Vu Ha
+ */
 public class Course {
 
 	private String courseName;
@@ -11,7 +17,6 @@ public class Course {
 	public Course(String courseName, int courseNum) {
 		this.setCourseName(courseName);
 		this.setCourseNum(courseNum);
-		// Both of the following are only association
 		preReq = new ArrayList<Course>();
 		offeringList = new ArrayList<CourseOffering>();
 	}
@@ -56,7 +61,6 @@ public class Course {
 	}
 
 	public CourseOffering getCourseOfferingAt(int i) {
-		// TODO Auto-generated method stub
 		if (i < 0 || i >= offeringList.size() )
 			return null;
 		else

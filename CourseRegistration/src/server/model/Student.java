@@ -6,6 +6,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/** 
+ * @author Ayush Chaudhari
+ * @author Duan Le
+ * @author Vu Ha
+ */
 public class Student {
 	
 	private String studentName;
@@ -28,36 +33,56 @@ public class Student {
 		offeringListSize++;
 	}
 	
-	public void removeCourse(CourseOffering theOffering)
+	public void removeCourse(Registration theReg)
 	{
-		offeringList.remove(theOffering);
-		offeringListSize--;
+		studentRegList.remove(theReg);
 	}
 	
-	public void printAllStudentCourses(Socket s)
+	public String removeCourse(String courseName, int courseNum)
 	{
-		try {
-			PrintWriter socketOut = new PrintWriter(s.getOutputStream());
-			Iterator<CourseOffering> iterator = offeringList.iterator();
-			int i=0;
-			if(offeringListSize!=0)
+		String sender = "";
+		int counter = 0;
+		for(int i=0; i<studentRegList.size(); i++)
+		{
+			if(studentRegList.get(i).getTheOffering().getTheCourse().getCourseName().toLowerCase().equals(courseName.toLowerCase()) && studentRegList.get(i).getTheOffering().getTheCourse().getCourseNum() == courseNum)
 			{
-				socketOut.println("Here are your courses: ");
-				while(iterator.hasNext() && i<offeringListSize)
+				studentRegList.remove(i);
+				sender += "Opperation successful";
+				counter++;
+			}
+		}
+		if(counter == 0)
+			sender+="the student is not taking this class";
+		return sender;
+	}
+	
+	public String printAllStudentCourses(Socket s)
+	{
+		String sender = "";
+		try {
+			PrintWriter socketOut = new PrintWriter(s.getOutputStream(),true);
+			Iterator<Registration> iterator = studentRegList.iterator();
+			int i=0;
+			if(studentRegList.size()!=0)
+			{
+				sender += "Here are your courses: \n";
+				while(iterator.hasNext() && i<studentRegList.size())
 				{
-					int temp = i+1;
-					socketOut.println(temp + ": " + offeringList.get(i));
-					socketOut.println();
+					sender +=  studentRegList.get(i) + "\n";
 					i++;
 				}	
-				socketOut.println();
+					sender += "\n";
 			}
 			else
-				socketOut.println(studentName + " currently has no courses. ");
+			{
+				sender += "Student Name: " + studentName  + "    Student ID: "  + studentId + "\n\n\n              currently has no courses.";
+				
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		};
+		System.out.println(sender);
+		return sender;
 	}
 	public String getStudentName() {
 		return studentName;
@@ -90,8 +115,11 @@ public class Student {
 	}
 
 	public void addRegistration(Registration registration) {
-		// TODO Auto-generated method stub
 		studentRegList.add(registration);
+	}
+	
+	public ArrayList<Registration> getRegList(){
+		return studentRegList;
 	}
 
 }

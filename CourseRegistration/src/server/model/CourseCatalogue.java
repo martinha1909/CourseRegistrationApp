@@ -1,6 +1,11 @@
 package server.model;
 import java.util.ArrayList;
 
+/** 
+ * @author Ayush Chaudhari
+ * @author Duan Le
+ * @author Vu Ha
+ */
 public class CourseCatalogue {
 	
 	private ArrayList <Course> courseList;
@@ -10,7 +15,6 @@ public class CourseCatalogue {
 	}
 	
 	private void loadFromDataBase() {
-		// TODO Auto-generated method stub
 		DBManager db = new DBManager();
 		setCourseList(db.readFromDataBase());
 		createCourseOffering(db.courseList.get(0), 1, 100);
@@ -40,11 +44,7 @@ public class CourseCatalogue {
 		displayCourseNotFoundError();
 		return null;
 	}
-	//Typically, methods that are called from other methods of the class
-	//are private and are not exposed for use by other classes.
-	//These methods are refereed to as helper methods or utility methods
 	private void displayCourseNotFoundError() {
-		// TODO Auto-generated method stub
 		System.err.println("Course was not found!");
 		
 	}
@@ -60,8 +60,7 @@ public class CourseCatalogue {
 	public String toString () {
 		String st = "All courses in the catalogue: \n";
 		for (Course c : courseList) {
-			st += c.toString();  //This line invokes the toString() method of Course
-			st += "\n";
+			st += c.toString(); 
 		}
 		return st;
 	}

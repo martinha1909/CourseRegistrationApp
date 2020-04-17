@@ -2,12 +2,16 @@ package server.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/** 
+ * @author Ayush Chaudhari
+ * @author Duan Le
+ * @author Vu Ha
+ */
 public class CourseOffering {
 	
 	private int secNum;
 	private int secCap;
 	private Course theCourse;
-	//private ArrayList<Student> studentList;
 	private ArrayList <Registration> offeringRegList;
 	private int offeringRegListSize;
 	
@@ -57,7 +61,6 @@ public class CourseOffering {
 		return st;
 	}
 	public void addRegistration(Registration registration) {
-		// TODO Auto-generated method stub
 		offeringRegList.add(registration);
 		offeringRegListSize++;
 	}

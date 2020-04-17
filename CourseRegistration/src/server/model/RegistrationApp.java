@@ -1,109 +1,155 @@
 package server.model;
+
 import java.io.BufferedReader;
+import java.util.Iterator;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/** 
+ * @author Ayush Chaudhari
+ * @author Duan Le
+ * @author Vu Ha
+ */
 public class RegistrationApp {
-	private Student student;
+	private ArrayList <Student> students;
 	private Course theCourse;
 	private CourseCatalogue cat;
 	private PrintWriter socketOut;
-	private BufferedReader socketIn;
 	private Socket theSocket;
 	
-	RegistrationApp(Socket s)
+	public RegistrationApp(Socket s, PrintWriter p)
 	{
+		students = new ArrayList<Student>();
 		theSocket = s;
-		try {
-			socketIn = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
-			socketOut = new PrintWriter(theSocket.getOutputStream());
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
-		student = new Student("Martin", 30068529);
+		socketOut = p;
+		
+		students.add(new Student("Martin", 30068529));
+		students.add(new Student("Ayush", 12345678));
+		students.add(new Student("Duan", 87654321));
 		cat = new CourseCatalogue();
 	}
 	
-	public void searchCatalogueCourses(String courseName, int courseNum)
+	public void searchCatalogueCourses(String courseName, String courseN)
 	{
+		int courseNum = Integer.parseInt(courseN);
 		theCourse = cat.searchCat(courseName, courseNum);
 		if (theCourse != null) {
 			sendString("Course found: ");
 			sendString(theCourse.getCourseOfferingAt(0).toString());
 			sendString(theCourse.getCourseOfferingAt(1).toString());
+			sendString(theCourse.getCourseOfferingAt(2).toString());
+			sendString("end");
 		}
 		else
 		{
-			sendString("Sorry we can't find this course in our system. ");
+			sendString("Sorry we can't find this course in our system. \n");
+			sendString("end");
 		}
-		sendString("\n");
 	}
 	
 	public void viewAllCourses()
 	{
 		sendString(cat.toString());
-		sendString("\n");
+		sendString("end");
 	}
 	
-	public void addStudentCourses(String courseName, int courseNum)
+	public void addStudentCourses(String StudentId, String courseName, String courseN,String sec)
 	{
+		int id = Integer.parseInt(StudentId);
+		int courseNum = Integer.parseInt(courseN);
+		int section = Integer.parseInt(sec);
+		
+		Registration t = null;
+		Iterator k = students.iterator();
+		for(int j=0; j<students.size(); j++)
+		{
+			if(students.get(j).getStudentId() == id)
+				t = new Registration(students.get(j));
+		}
+		int i = 0;
+		Student temp = null;
+		while(k.hasNext() && i < students.size())
+		{
+			if(students.get(i).getStudentId() == id)
+			{
+				temp = students.get(i);
+			}
+			i++;
+		}
+
+		
 		theCourse = cat.searchCat(courseName, courseNum);
 		if(theCourse!=null)
 		{
-			ArrayList<CourseOffering> offList = theCourse.getOfferingList();
-			sendString("Which offering would you like to choose? ");
-			for(int i=0; i<offList.size(); i++)
-			{
-				sendString(i+1 + ". " + offList.get(i).toString());
-				sendString("\n");
-			}
-//			try {
-//				int choice = Integer.parseInt(socketIn.readLine());
-//				Registration rg;
-//				switch(choice)
-//				{
-//				case 1:
-//					rg = new Registration(student, theCourse.getCourseOfferingAt(0));
-//					break;
-//				case 2:
-//					rg = new Registration(student, theCourse.getCourseOfferingAt(1));
-//					break;
-//				case 3:
-//					rg = new Registration(student, theCourse.getCourseOfferingAt(2));
-//				}
-				student.printAllStudentCourses(theSocket);
-				sendString("\n");
-			sendString("\n");
-//			} catch (NumberFormatException | IOException e) {
-//				e.printStackTrace();
-//			}
+			
+			t.completeRegistration(temp,theCourse.getCourseOfferingAt(section-1));
+			sendString("Registration completed");
+			sendString("end");
 		}
-	}
-	
-	public void removeStudentCourses(int choice)
-	{
-		/**
-		 * This line should be in the server right before this function is called:
-		 * sendString("Which course would you like to remove? ");
-		 */
-		student.printAllStudentCourses(theSocket);
-		if(student.getOfferingListSize()!=0)
+		else
 		{
-			Registration rg = new Registration(student, student.getOfferingList().get(choice-1), "remove");
-			sendString("Operation succedded! ");
+			sendString("Could not register to specified course, try again");
+			sendString("end");
 		}
-		sendString("\n");
+
 	}
 	
-	public void viewAllStudentCourses() 
+	public void removeStudentCourses(String StudentId, String courseName, String courseNum)
 	{
-		student.printAllStudentCourses(theSocket);
+
+		int num = Integer.parseInt(courseNum);
+		int id = Integer.parseInt(StudentId);
+
+		Iterator k = students.iterator();
+
+		int i = 0;
+		Student temp = null;
+		while(k.hasNext() && i < students.size())
+		{
+			if(students.get(i).getStudentId() == id)
+			{
+				temp = students.get(i);
+			}
+			i++;
+		}
+		if(temp!=null) {
+			String toSend = temp.removeCourse(courseName, num);
+			sendString(toSend);
+			sendString("end");
+		}
+		else {
+			sendString("Student not found");
+			sendString("end");
+		}
+	}
+	
+	public void viewAllStudentCourses(String StudentId) 
+	{
+		int id = Integer.parseInt(StudentId);
+
+		Iterator k = students.iterator();
+
+		int i = 0;
+		Student temp = null;
+		while(k.hasNext() && i < students.size())
+		{
+			if(students.get(i).getStudentId() == id)
+			{
+				temp = students.get(i);
+			}
+			i++;
+		}
+		
+		String toSend = temp.printAllStudentCourses(theSocket);
+		sendString(toSend);
+		sendString("end");
 	}
 	
 	private void sendString(String s) {
+		
 		socketOut.println(s);
 		socketOut.flush();
 	}
