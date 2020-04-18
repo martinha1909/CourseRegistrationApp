@@ -5,8 +5,8 @@ import java.sql.*;
 public class Database implements DBCredentials
 {
 	private Connection conn;
-
-	public initializeConnection()
+	private ResultSet rs;
+	public void initializeConnection()
 	{
 		try
 		{
@@ -70,6 +70,38 @@ public class Database implements DBCredentials
 	}
 
 
+	public String searchStudent(int id, String firstName, String lastName)
+	{
+		String toSend = "";
+		try {
+			String query = "SELECT * FROM mydb.student where (id, firstName, lastName) VALUES (?, ?, ?)";
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.setInt(1, id);
+			pStat.setString(2, firstName);
+			pStat.setString(3,  lastName);
+			rs = pStat.executeQuery();
+			while(rs.next()) {
+				toSend += rs.getInt("id") + rs.getString("firstName") + rs.getString("lastName");
+			}
+		}catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		return toSend;
+	}
+	
+	public void deleteUser(int id)
+	{
+		String query = "DELETE FROM student WHERE id = 'id'";
+		try {
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.executeUpdate();
+			pStat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public void insertCourse(int id, String courseName, String courseNumber)
 	{
 		try 
@@ -102,10 +134,9 @@ public class Database implements DBCredentials
 
 		try
 		{
-			ResultSet rs;
 
 			//try changing mydb.coursecatalogue to just coursecatalogue if not working
-			String query = "SELECT * FROM mydb.coursecatalogue";
+			String query = "SELECT * FROM coursecatalogue";
 			Statement stat = conn.createStatement();
 			
 			rs = stat.executeUpdate(query);
@@ -124,5 +155,18 @@ public class Database implements DBCredentials
 		}
 
 		return s;
+	}
+	
+	public void deleteCourse(String name, String num)
+	{
+		String query = "DELETE FROM coursecatalogue WHERE courseName = 'name' and courseNum = 'num'";
+		try {
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.executeUpdate();
+			pStat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

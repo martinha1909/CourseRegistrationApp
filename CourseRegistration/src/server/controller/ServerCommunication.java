@@ -1,5 +1,6 @@
 package server.controller;
 import server.*;
+import server.model.Database;
 import server.model.RegistrationApp;
 
 import java.io.BufferedReader;
@@ -19,7 +20,7 @@ import java.util.concurrent.Executors;
 public class ServerCommunication {
 
 	private ServerSocket s;
-
+	private Database db;
 	private ExecutorService pool;
 	
 	
@@ -29,6 +30,8 @@ public class ServerCommunication {
 		{
 			s = new ServerSocket(port);
 			pool = Executors.newCachedThreadPool();
+			db = new Database();
+			db.initializeConnection();
 		}catch(IOException e)
 		{
 			System.err.println("Error");
