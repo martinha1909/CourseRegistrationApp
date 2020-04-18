@@ -70,15 +70,13 @@ public class Database implements DBCredentials
 	}
 
 
-	public String searchStudent(int id, String firstName, String lastName)
+	public String searchStudent(int studentId)
 	{
 		String toSend = "";
 		try {
-			String query = "SELECT * FROM mydb.student where (id, firstName, lastName) VALUES (?, ?, ?)";
+			String query = "SELECT * FROM mydb.student where id = studentId";
 			PreparedStatement pStat = conn.prepareStatement(query);
-			pStat.setInt(1, id);
-			pStat.setString(2, firstName);
-			pStat.setString(3,  lastName);
+			pStat.setInt(1, studentId);
 			rs = pStat.executeQuery();
 			while(rs.next()) {
 				toSend += rs.getInt("id") + rs.getString("firstName") + rs.getString("lastName");
@@ -136,17 +134,17 @@ public class Database implements DBCredentials
 		{
 
 			//try changing mydb.coursecatalogue to just coursecatalogue if not working
+			Statement stmt = conn.createStatement();
 			String query = "SELECT * FROM coursecatalogue";
-			Statement stat = conn.createStatement();
+			rs = stmt.executeQuery(query);
 			
-			rs = stat.executeUpdate(query);
 			
 			while (rs.next())
 			{
 				s  = s + rs.getString("courseName") + " " + rs.getString("courseNumber") + "\n";
 			}
 
-			stat.close();
+			stmt.close();
 			rs.close();
 		}
 		catch (SQLException e)
