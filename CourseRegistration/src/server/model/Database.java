@@ -14,7 +14,10 @@ public class Database implements DBCredentials {
 			conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println("Connection could not be established.");
 		}
+
+		System.out.println("Connection successfully established.");
 	}
 
 	public void closeConnection() {
