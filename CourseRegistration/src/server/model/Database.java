@@ -31,7 +31,7 @@ public class Database implements DBCredentials {
 	 */
 	public void createSchema() {
 		String query = "CREATE SCHEMA mydb";
-		
+
 		try {
 			Statement stat = conn.createStatement();
 			stat.executeUpdate(query);
@@ -48,7 +48,29 @@ public class Database implements DBCredentials {
 	 * Create a student table and a course catalogue table, ONLY RUN ONCE
 	 */
 	public void createTables() {
+		String query1 = "CREATE TABLE student " + 
+					   "(id INTEGER not NULL, " + 
+					   " firstname VARCHAR(255), " + 
+					   " lastname VARCHAR(255), " + 
+					   " PRIMARY KEY ( id ))";
 
+		String query2 = "CREATE TABLE coursecatalogue " + 
+					   "(id INTEGER not NULL, " + 
+					   " coursename VARCHAR(255), " + 
+					   " coursenumber VARCHAR(255), " + 
+					   " PRIMARY KEY ( id ))";
+
+		try {
+			Statement stat = conn.createStatement();
+			stat.executeUpdate(query1);
+			stat.executeUpdate(query2);
+			stat.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Table(s) could not be created.");
+		}
+		
+		System.out.println("Tables created successfully in given schema.");
 	}
 
 	/**
