@@ -67,6 +67,7 @@ private void switcher(String[] word,int num) {
 				send = theDataBase.getCourse(word[0],word[1]);
 				send += "end";
 				socketOut.println(send);
+				send = "";
 				break;
 				
 			case 2:
@@ -75,10 +76,18 @@ private void switcher(String[] word,int num) {
 				if(enrolled)
 				{
 					theLogic.addStudentCourses(word[0],word[1],word[2],word[3]);
-					socketOut.println("Registration complete end");
+					send = "Registration complete";
+					send += "end";
+					socketOut.println(send);
+					send = "";
 				}
 				else
-				socketOut.println("Student is not enrolled in the system end");
+				{
+					send = "Student is not enrolled in the system";
+					send += "end";
+					socketOut.println(send);
+					send = "";
+				}
 				break;
 				
 			case 3:
@@ -97,6 +106,7 @@ private void switcher(String[] word,int num) {
 				send = theDataBase.getCourseCatalogue();
 				send += "end";
 				socketOut.println(send);
+				send = "";
 				break;
 				
 			case 5:
