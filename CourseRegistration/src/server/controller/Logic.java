@@ -76,10 +76,6 @@ private void switcher(String[] word,int num) {
 				if(enrolled)
 				{
 					theLogic.addStudentCourses(word[0],word[1],word[2],word[3]);
-					send = "Registration complete";
-					send += "end";
-					socketOut.println(send);
-					send = "";
 				}
 				else
 				{
@@ -95,7 +91,6 @@ private void switcher(String[] word,int num) {
 				if(enrolled)
 				{
 					theLogic.removeStudentCourses(word[0],word[1], word[2], word[3]);
-					socketOut.println("Successfully removed end");
 				}
 				else
 					socketOut.println("Student is not enrolled in the system end");
