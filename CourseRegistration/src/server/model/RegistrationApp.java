@@ -14,46 +14,18 @@ import java.util.ArrayList;
  * @author Vu Ha
  */
 public class RegistrationApp {
-	private ArrayList <Student> students;
 	private Course theCourse;
 	private CourseCatalogue cat;
 	private PrintWriter socketOut;
 	private Socket theSocket;
+	private Database db;
 	
-	public RegistrationApp(Socket s, PrintWriter p)
+	public RegistrationApp(Socket s, PrintWriter p, Database theDataBase)
 	{
-		students = new ArrayList<Student>();
 		theSocket = s;
 		socketOut = p;
-		
-		students.add(new Student("Martin", 30068529));
-		students.add(new Student("Ayush", 12345678));
-		students.add(new Student("Duan", 87654321));
-		cat = new CourseCatalogue();
-	}
-	
-	public void searchCatalogueCourses(String courseName, String courseN)
-	{
-		int courseNum = Integer.parseInt(courseN);
-		theCourse = cat.searchCat(courseName, courseNum);
-		if (theCourse != null) {
-			sendString("Course found: ");
-			sendString(theCourse.getCourseOfferingAt(0).toString());
-			sendString(theCourse.getCourseOfferingAt(1).toString());
-			sendString(theCourse.getCourseOfferingAt(2).toString());
-			sendString("end");
-		}
-		else
-		{
-			sendString("Sorry we can't find this course in our system. \n");
-			sendString("end");
-		}
-	}
-	
-	public void viewAllCourses()
-	{
-		sendString(cat.toString());
-		sendString("end");
+		db = theDataBase;
+		cat = new CourseCatalogue(db);
 	}
 	
 	public void addStudentCourses(String StudentId, String courseName, String courseN,String sec)
@@ -62,23 +34,9 @@ public class RegistrationApp {
 		int courseNum = Integer.parseInt(courseN);
 		int section = Integer.parseInt(sec);
 		
-		Registration t = null;
-		Iterator k = students.iterator();
-		for(int j=0; j<students.size(); j++)
-		{
-			if(students.get(j).getStudentId() == id)
-				t = new Registration(students.get(j));
-		}
+		Registration t = new Registration(db.getStudent(id));
 		int i = 0;
-		Student temp = null;
-		while(k.hasNext() && i < students.size())
-		{
-			if(students.get(i).getStudentId() == id)
-			{
-				temp = students.get(i);
-			}
-			i++;
-		}
+		Student temp = db.getStudent(id);
 
 		
 		theCourse = cat.searchCat(courseName, courseNum);
@@ -86,6 +44,7 @@ public class RegistrationApp {
 		{
 			
 			t.completeRegistration(temp,theCourse.getCourseOfferingAt(section-1));
+			db.decrementAvailableSeats(courseName, courseN, sec);
 			sendString("Registration completed");
 			sendString("end");
 		}
@@ -97,26 +56,17 @@ public class RegistrationApp {
 
 	}
 	
-	public void removeStudentCourses(String StudentId, String courseName, String courseNum)
+	public void removeStudentCourses(String StudentId, String courseName, String courseNum, String courseSec)
 	{
 
 		int num = Integer.parseInt(courseNum);
 		int id = Integer.parseInt(StudentId);
 
-		Iterator k = students.iterator();
-
 		int i = 0;
-		Student temp = null;
-		while(k.hasNext() && i < students.size())
-		{
-			if(students.get(i).getStudentId() == id)
-			{
-				temp = students.get(i);
-			}
-			i++;
-		}
+		Student temp = db.getStudent(id);
 		if(temp!=null) {
 			String toSend = temp.removeCourse(courseName, num);
+			db.decrementAvailableSeats(courseName, courseNum, courseSec);
 			sendString(toSend);
 			sendString("end");
 		}
@@ -130,18 +80,9 @@ public class RegistrationApp {
 	{
 		int id = Integer.parseInt(StudentId);
 
-		Iterator k = students.iterator();
 
 		int i = 0;
-		Student temp = null;
-		while(k.hasNext() && i < students.size())
-		{
-			if(students.get(i).getStudentId() == id)
-			{
-				temp = students.get(i);
-			}
-			i++;
-		}
+		Student temp = db.getStudent(id);
 		
 		String toSend = temp.printAllStudentCourses(theSocket);
 		sendString(toSend);

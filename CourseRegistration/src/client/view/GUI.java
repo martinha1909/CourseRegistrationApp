@@ -143,12 +143,14 @@ public class GUI
                 String studentId = null;
                 String courseName = null;
                 String courseNumber = null;
+                String courseSec = null;
               
                 while(studentId == null || courseName == null || courseNumber == null)
                 {
                 	studentId = JOptionPane.showInputDialog(p,"Enter the student's id:");
                     courseName = JOptionPane.showInputDialog(p,"Enter the name of the course you want to remove:");
                     courseNumber = JOptionPane.showInputDialog("Enter the number of the course you want to remove: ");
+                    courseSec = JOptionPane.showInputDialog("Please enter the section of the course you want to remove: ");
                     
                     if(studentId == null || courseName == null || courseNumber == null)
                     {
@@ -157,7 +159,7 @@ public class GUI
                 }
                 
 
-                sending.add(studentId + "," + courseName +  "," + courseNumber + ",3");   
+                sending.add(studentId + "," + courseName +  "," + courseNumber + "," + courseSec + ",3");   
                 pressed = true;
             }
                 

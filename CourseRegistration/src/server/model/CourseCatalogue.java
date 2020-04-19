@@ -9,23 +9,18 @@ import java.util.ArrayList;
 public class CourseCatalogue {
 	
 	private ArrayList <Course> courseList;
-	
-	public CourseCatalogue () {
+	private Database db;
+	public CourseCatalogue (Database theDataBase) {
+		db = theDataBase;
 		loadFromDataBase ();
 	}
 	
 	private void loadFromDataBase() {
-		DBManager db = new DBManager();
-		setCourseList(db.readFromDataBase());
-		createCourseOffering(db.courseList.get(0), 1, 100);
-		createCourseOffering(db.courseList.get(0), 2, 200);
-		createCourseOffering(db.courseList.get(0), 3, 200);
-		createCourseOffering(db.courseList.get(1), 1, 400);
-		createCourseOffering(db.courseList.get(1), 2, 300);
-		createCourseOffering(db.courseList.get(1), 3, 300);
-		createCourseOffering(db.courseList.get(2), 1, 50);
-		createCourseOffering(db.courseList.get(2), 2, 70);
-		createCourseOffering(db.courseList.get(2), 3, 70);
+		setCourseList();
+		for(int i=1; i<=db.getNumberOfRows("coursecatalogue"); i++)
+		{
+			createCourseOffering(courseList.get(i-1), db.getSecNum(i), db.getSecCap(i));
+		}
 		
 	}
 	public void createCourseOffering (Course c, int secNum, int secCap) {
@@ -53,8 +48,11 @@ public class CourseCatalogue {
 	}
 
 
-	public void setCourseList(ArrayList <Course> courseList) {
-		this.courseList = courseList;
+	public void setCourseList() {
+		for(int i=1; i<=db.getNumberOfRows("coursecatalogue"); i++)
+		{
+			courseList.add(db.getRow("coursecatalogue", i));
+		}
 	}
 	@Override
 	public String toString () {

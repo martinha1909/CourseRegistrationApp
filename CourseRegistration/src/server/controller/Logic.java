@@ -24,7 +24,7 @@ public class Logic implements Runnable{
 			theSocket = s;
 			socketIn = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
 			socketOut = new PrintWriter(theSocket.getOutputStream(),true);
-			theLogic = new RegistrationApp(theSocket, socketOut);
+			theLogic = new RegistrationApp(theSocket, socketOut, d);
 			theDataBase = d;
 		}catch(IOException e)
 		{
@@ -80,7 +80,7 @@ private void switcher(String[] word,int num) {
 			case 3:
 				enrolled = theDataBase.isStudent(word[0]);
 				if(enrolled)
-					theLogic.removeStudentCourses(word[0],word[1], word[2]);
+					theLogic.removeStudentCourses(word[0],word[1], word[2], word[3]);
 				else
 					socketOut.println("Student is not enrolled in the system");
 				break;

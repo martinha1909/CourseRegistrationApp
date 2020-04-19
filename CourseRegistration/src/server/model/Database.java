@@ -89,7 +89,7 @@ public class Database implements DBCredentials {
 	 */
 	public void insertStudent(int id, String firstName, String lastName) {
 		try {
-			String query = "INSERT INTO mydb.student (id, firstname, lastname) VALUES (?, ?, ?)";
+			String query = "INSERT INTO student (id, firstname, lastname) VALUES (?, ?, ?)";
 			PreparedStatement pStat = conn.prepareStatement(query);
 
 			pStat.setInt(1, id);
@@ -102,6 +102,23 @@ public class Database implements DBCredentials {
 		}
 	}
 	
+	public Student searchStudent(int studentId)
+	{
+		Student t = null;;
+		try {
+			String query = "SELECT * FROM student where id = studentId";
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.setInt(1, studentId);
+			rs = pStat.executeQuery();
+			if(rs.next())
+				t = new Student(rs.getString("firstname"), Integer.parseInt(rs.getString("id")));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return t;
+	}
+	
 	/**
 	 * Inserts a course into the database
 	 * For DBSetup class to use, could also be implemented so admin can use
@@ -112,7 +129,7 @@ public class Database implements DBCredentials {
 	 */
 	public void insertCourse(int id, String courseName, String courseNumber, String section, int seats) {
 		try {
-			String query = "INSERT INTO mydb.coursecatalogue (id, coursename, coursenumber, section, seats) VALUES(?, ?, ?, ?, ?)";
+			String query = "INSERT INTO coursecatalogue (id, coursename, coursenumber, section, seats) VALUES(?, ?, ?, ?, ?)";
 			PreparedStatement pStat = conn.prepareStatement(query);
 
 			pStat.setInt(1, id);
@@ -136,7 +153,7 @@ public class Database implements DBCredentials {
 	public boolean isStudent(String studentId) {
 		try {
 			int ID = Integer.parseInt(studentId);
-			String query = "SELECT * FROM mydb.student where id = ?";
+			String query = "SELECT * FROM student where id = ?";
 			PreparedStatement pStat = conn.prepareStatement(query);
 			pStat.setInt(1, ID);
 			rs = pStat.executeQuery();
@@ -144,6 +161,8 @@ public class Database implements DBCredentials {
 			if (rs.next()) {
 				return true;
 			}
+			rs.close();
+			pStat.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -194,7 +213,7 @@ public class Database implements DBCredentials {
 			int id = rs.getInt("id");
 			int newSeats = rs.getInt("seats") + 1;
 			
-			String query2 = "UPDATE mydb.coursecatalogue SET seats = ? WHERE (id = ?)";
+			String query2 = "UPDATE coursecatalogue SET seats = ? WHERE (id = ?)";
 			PreparedStatement pStat2 = conn.prepareStatement(query2);
 			pStat2.setInt(1, newSeats);
 			pStat2.setInt(2, id);
@@ -223,7 +242,7 @@ public class Database implements DBCredentials {
 			int id = rs.getInt("id");
 			int newSeats = rs.getInt("seats") - 1;
 			
-			String query2 = "UPDATE mydb.coursecatalogue SET seats = ? WHERE (id = ?)";
+			String query2 = "UPDATE coursecatalogue SET seats = ? WHERE (id = ?)";
 			PreparedStatement pStat2 = conn.prepareStatement(query2);
 			pStat2.setInt(1, newSeats);
 			pStat2.setInt(2, id);
@@ -242,13 +261,14 @@ public class Database implements DBCredentials {
 	 * @return the course and its sections from  catalogue from the database as a single string if found else return course not found
 	 */
 	public String getCourse(String courseName, String courseNumber) {
+		int num = Integer.parseInt(courseNumber);
 		String s = "";
 
 		try {
-			String query = "SELECT * FROM coursecatalogue where coursename = ? and coursenumber = ?";
+			String query = "SELECT * FROM coursecatalogue where coursename = courseName and coursenumber = num";
 			PreparedStatement stmt = conn.prepareStatement(query);
 			stmt.setString(1, courseName);
-			stmt.setString(2, courseNumber);
+			stmt.setInt(2, num);
 			rs = stmt.executeQuery();
 			
 			if (rs.next())
@@ -291,4 +311,95 @@ public class Database implements DBCredentials {
 
         return s;
     }
+    
+    public int getNumberOfRows(String tableName)
+    {
+    	int count = 0;;
+    	try {
+        	Statement s = conn.createStatement();
+			rs = s.executeQuery("SELECT COUNT(*) AS rowcount FROM tableName");
+			rs.next();
+			count = rs.getInt("rowcount");
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return count;
+    }
+    
+    public Course getRow(String tableName, int rowId)
+    {
+    	Course c = null;
+    	try {
+    		String query = "SELECT * FROM " + tableName + " where id = rowId";
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.setInt(1, rowId);
+			rs = pStat.executeQuery();
+			if(rs.next())
+				c = new Course(rs.getString("coursename"), Integer.parseInt(rs.getString("courseNumber")));
+			pStat.close();
+			rs.close(); 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return c;
+    }
+    
+    public int getSecNum(int rowId)
+    {
+    	int section = 0;
+    	try {
+    		String query = "SELECT * FROM coursecatalogue where id = rowId";
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.setInt(1, rowId);
+			rs = pStat.executeQuery();
+			if(rs.next())
+				section = Integer.parseInt(rs.getString("section"));
+			pStat.close();
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return section;
+    }
+    
+    public int getSecCap(int rowId)
+    {
+    	int cap = 0;
+    	try {
+    		String query = "SELECT * FROM coursecatalogue where id = rowId";
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.setInt(1, rowId);
+			rs = pStat.executeQuery();
+			if(rs.next())
+				cap = Integer.parseInt(rs.getString("seats"));
+			rs.close();
+			pStat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return cap;
+    }
+
+	public Student getStudent(int studentId) {
+		Student s = null;
+    	try {
+    		String query = "SELECT * FROM 	student where id = studentId";
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.setInt(1, studentId);
+			rs = pStat.executeQuery();
+			if(rs.next())
+				s = new Student(rs.getString("fristname"), Integer.parseInt(rs.getString("id")));
+			pStat.close();
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return s;
+	}
 }
