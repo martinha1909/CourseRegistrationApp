@@ -209,9 +209,12 @@ public class Database implements DBCredentials {
 			pStat1.setString(2, courseNumber);
 			pStat1.setString(3, section);
 			rs = pStat1.executeQuery();
-			rs.next();
-			int id = rs.getInt("id");
-			int newSeats = rs.getInt("seats") + 1;
+			int id, newSeats;
+			
+			if (rs.next()) {
+				id = rs.getInt("id");
+				newSeats = rs.getInt("seats") + 1;
+			}
 			
 			String query2 = "UPDATE mydb.coursecatalogue SET seats = ? WHERE (id = ?)";
 			PreparedStatement pStat2 = conn.prepareStatement(query2);
@@ -238,9 +241,13 @@ public class Database implements DBCredentials {
 			pStat1.setString(2, courseNumber);
 			pStat1.setString(3, section);
 			rs = pStat1.executeQuery();
-			rs.next();
-			int id = rs.getInt("id");
-			int newSeats = rs.getInt("seats") - 1;
+			
+			int id, newSeats;
+			
+			if (rs.next()) {
+				id = rs.getInt("id");
+				newSeats = rs.getInt("seats") - 1;
+			}
 			
 			String query2 = "UPDATE mydb.coursecatalogue SET seats = ? WHERE (id = ?)";
 			PreparedStatement pStat2 = conn.prepareStatement(query2);
