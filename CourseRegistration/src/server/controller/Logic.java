@@ -65,6 +65,7 @@ private void switcher(String[] word,int num) {
 			case 1:
 				
 				send = theDataBase.getCourse(word[0],word[1]);
+				send += "end";
 				socketOut.println(send);
 				break;
 				
@@ -72,22 +73,29 @@ private void switcher(String[] word,int num) {
 				
 				enrolled = theDataBase.isStudent(word[0]);
 				if(enrolled)
+				{
 					theLogic.addStudentCourses(word[0],word[1],word[2],word[3]);
+					socketOut.println("Registration complete end");
+				}
 				else
-				socketOut.println("Student is not enrolled in the system");
+				socketOut.println("Student is not enrolled in the system end");
 				break;
 				
 			case 3:
 				enrolled = theDataBase.isStudent(word[0]);
 				if(enrolled)
+				{
 					theLogic.removeStudentCourses(word[0],word[1], word[2], word[3]);
+					socketOut.println("Successfully removed end");
+				}
 				else
-					socketOut.println("Student is not enrolled in the system");
+					socketOut.println("Student is not enrolled in the system end");
 				break;
 				
 			case 4:
 		
 				send = theDataBase.getCourseCatalogue();
+				send += "end";
 				socketOut.println(send);
 				break;
 				
@@ -96,9 +104,10 @@ private void switcher(String[] word,int num) {
 				if(enrolled)
 					theLogic.viewAllStudentCourses(word[0]);
 				else
-					socketOut.println("Student is not enrolled in the system");
+					socketOut.println("Student is not enrolled in the system end");
 				break;
 		}
+			socketOut.flush();
 		
 	}
 
