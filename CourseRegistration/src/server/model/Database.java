@@ -101,20 +101,25 @@ public class Database implements DBCredentials {
 		}
 	}
 
-	public String searchStudent(int studentId) {
-		String toSend = "";
+	/**
+	 * Checks if student is registered in the database
+	 * @param studentId the id of the student
+	 * @return true if the student is in the database, false otherwise
+	 */
+	public boolean isStudent(String studentId) {
 		try {
-			String query = "SELECT * FROM mydb.student where id = studentId";
+			int ID = Integer.parseInt(studentId);
+			String query = "SELECT * FROM mydb.student where id = ID";
 			PreparedStatement pStat = conn.prepareStatement(query);
-			pStat.setInt(1, studentId);
+			pStat.setInt(1, ID);
 			rs = pStat.executeQuery();
-			while (rs.next()) {
-				toSend += rs.getInt("id") + rs.getString("firstName") + rs.getString("lastName");
+			if (rs.next()) {
+				return true;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return toSend;
+		return false;
 	}
 
 	public void deleteUser(int id) {
@@ -137,8 +142,8 @@ public class Database implements DBCredentials {
 			PreparedStatement pStat = conn.prepareStatement(query);
 
 			pStat.setInt(1, id);
-			pStat.setString(2, courseName);
-			pStat.setString(3, courseNumber);
+			pStat.setString(2, "coursename");
+			pStat.setString(3, "coursenumber");
 			pStat.executeUpdate();
 			pStat.close();
 		} catch (SQLException e) {
@@ -147,35 +152,36 @@ public class Database implements DBCredentials {
 	}
 
 	/**
-	 * Gets the course catalogue
+	 * Gets a course from the catalogue from database
 	 * 
-	 * @return the whole course catalogue from the database as a single string
+	 * @return the whole course from  catalogue from the database as a single string if the course is found 
 	 */
-	public String getCourseCatalogue() {
+	public String getCourse(String name, String num) {
 		String s = "";
 
 		try {
 
 			// try changing mydb.coursecatalogue to just coursecatalogue if not working
-			Statement stmt = conn.createStatement();
-			String query = "SELECT * FROM coursecatalogue";
-			rs = stmt.executeQuery(query);
-
-			while (rs.next()) {
-				s = s + rs.getString("courseName") + " " + rs.getString("courseNumber") + "\n";
+			String query = "SELECT * FROM coursecatalogue where coursename = name and coursenumber = num";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, "coursename");
+			stmt.setString(2, "coursenumber");
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				s+= rs.getString("coursename") + " " + rs.getString("coursenumber") + "\n";
 			}
-
-			stmt.close();
-			rs.close();
+			else
+				s+= "Course not found";
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return s;
 	}
+	
+	
 
 	public void deleteCourse(String name, String num) {
-		String query = "DELETE FROM coursecatalogue WHERE courseName = 'name' and courseNum = 'num'";
+		String query = "DELETE FROM coursecatalogue WHERE coursename = 'name' and coursenumber = 'num'";
 		try {
 			PreparedStatement pStat = conn.prepareStatement(query);
 			pStat.executeUpdate();
@@ -184,4 +190,32 @@ public class Database implements DBCredentials {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+     * Gets the course catalogue
+     * 
+     * @return the whole course catalogue from the database as a single string
+     */
+    public String getCourseCatalogue() {
+        String s = "";
+
+        try {
+
+            // try changing mydb.coursecatalogue to just coursecatalogue if not working
+            Statement stmt = conn.createStatement();
+            String query = "SELECT * FROM coursecatalogue";
+            rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                s = s + rs.getString("coursename") + " " + rs.getString("coursenumber") + "\n";
+            }
+
+            stmt.close();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return s;
+    }
 }

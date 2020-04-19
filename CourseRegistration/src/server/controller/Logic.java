@@ -1,5 +1,6 @@
 package server.controller;
 import server.model.Database;
+import server.model.RegistrationApp;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +15,7 @@ public class Logic implements Runnable{
 	private BufferedReader socketIn;
 	private PrintWriter socketOut;
 	private Database theDataBase;
+	private RegistrationApp theLogic;
 	
 	public Logic(Socket s, Database d)
 	{
@@ -22,6 +24,7 @@ public class Logic implements Runnable{
 			theSocket = s;
 			socketIn = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
 			socketOut = new PrintWriter(theSocket.getOutputStream(),true);
+			theLogic = new RegistrationApp(theSocket, socketOut);
 			theDataBase = d;
 		}catch(IOException e)
 		{
@@ -55,26 +58,31 @@ public class Logic implements Runnable{
 	}
 	
 private void switcher(String[] word,int num) {
-		
+	boolean enrolled; 
 	String send = "";
 		switch(num)
 		{
 			case 1:
 				
-				send = theDataBase.searchCatalogueCourses(word[0],word[1]);
+				send = theDataBase.getCourse(word[0],word[1]);
 				socketOut.println(send);
 				break;
 				
 			case 2:
 				
-				send = theDataBase.addStudentCourses(word[0],word[1],word[2],word[3]);
-				socketOut.println(send);
+				enrolled = theDataBase.isStudent(word[0]);
+				if(enrolled)
+					theLogic.addStudentCourses(word[0],word[1],word[2],word[3]);
+				else
+				socketOut.println("Student is not enrolled in the system");
 				break;
 				
 			case 3:
-
-				send = theDataBase.removeStudentCourses(word[0],word[1], word[2]);
-				socketOut.println(send);
+				enrolled = theDataBase.isStudent(word[0]);
+				if(enrolled)
+					theLogic.removeStudentCourses(word[0],word[1], word[2]);
+				else
+					socketOut.println("Student is not enrolled in the system");
 				break;
 				
 			case 4:
@@ -84,9 +92,11 @@ private void switcher(String[] word,int num) {
 				break;
 				
 			case 5:
-			
-				send = theDataBase.viewAllStudentCourses(word[0]);
-				socketOut.println(send);
+				enrolled = theDataBase.isStudent(word[0]);
+				if(enrolled)
+					theLogic.viewAllStudentCourses(word[0]);
+				else
+					socketOut.println("Student is not enrolled in the system");
 				break;
 		}
 		

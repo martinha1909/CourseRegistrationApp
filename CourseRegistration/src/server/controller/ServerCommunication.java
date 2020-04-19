@@ -44,7 +44,7 @@ public class ServerCommunication {
 		{
 			try
 			{
-				pool.execute(new Logic(s.accept()));
+				pool.execute(new Logic(s.accept(), db));
 				
 			}catch(IOException e)
 			{
