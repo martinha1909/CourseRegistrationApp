@@ -66,7 +66,7 @@ public class RegistrationApp {
 		Student temp = db.getStudent(StudentId);
 		if(temp!=null) {
 			String toSend = temp.removeCourse(courseName, num);
-			db.decrementAvailableSeats(courseName, courseNum, courseSec);
+			db.incrementAvailableSeats(courseName, courseNum, courseSec);
 			sendString(toSend);
 			sendString("end");
 		}
