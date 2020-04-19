@@ -273,6 +273,7 @@ public class Database implements DBCredentials {
 			
 			if (rs.next())
 			{
+				s += rs.getString("coursename") + " " + rs.getString("coursenumber") + " | Section: " +  rs.getString("section") + ", Available Seats: " + rs.getInt("seats") + "\n";
 				while (rs.next()) {
 					s += rs.getString("coursename") + " " + rs.getString("coursenumber") + " | Section: " +  rs.getString("section") + ", Available Seats: " + rs.getInt("seats") + "\n";
 				}
@@ -314,7 +315,7 @@ public class Database implements DBCredentials {
     
     public int getNumberOfRows(String tableName)
     {
-    	int count = 0;;
+    	int count = 0;
     	try {
         	Statement s = conn.createStatement();
 			rs = s.executeQuery("SELECT COUNT(*) AS rowcount FROM " + tableName);
