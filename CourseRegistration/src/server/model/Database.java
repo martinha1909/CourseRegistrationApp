@@ -2,10 +2,26 @@ package server.model;
 
 import java.sql.*;
 
+/**
+ * A simple database class to work with SQL servers. 
+ * 
+ * @author Duan Le
+ */
 public class Database implements DBCredentials {
+	
+	/**
+	 * The connection
+	 */
 	private Connection conn;
+	
+	/**
+	 * The ResultSet to hold information retrieved from tables
+	 */
 	private ResultSet rs;
 
+	/**
+	 * Connects to the SQL server
+	 */
 	public void initializeConnection() {
 		try {
 			Driver driver = new com.mysql.cj.jdbc.Driver();
@@ -20,6 +36,9 @@ public class Database implements DBCredentials {
 		System.out.println("Connection successfully established.");
 	}
 
+	/**
+	 * Closes the connection to the SQL server
+	 */
 	public void closeConnection() {
 		try {
 			conn.close();
@@ -29,7 +48,8 @@ public class Database implements DBCredentials {
 	}
 
 	/**
-	 * Create a student table and a course catalogue table, ONLY RUN ONCE
+	 * Create a student table and a course catalogue table
+	 * For DBSetup class to use, could also be implemented so admin can use
 	 */
 	public void createTables() {
 		String query1 = "CREATE TABLE student " + 
@@ -41,7 +61,9 @@ public class Database implements DBCredentials {
 		String query2 = "CREATE TABLE coursecatalogue " + 
 					   "(id INTEGER not NULL, " + 
 					   " coursename VARCHAR(255), " + 
-					   " coursenumber VARCHAR(255), " + 
+					   " coursenumber VARCHAR(255), " +
+					   " section VARCHAR(255), " +
+					   " seats INTEGER not NULL, " +
 					   " PRIMARY KEY ( id ))";
 
 		try {
@@ -59,6 +81,7 @@ public class Database implements DBCredentials {
 
 	/**
 	 * Inserts a student into the database
+	 * For DBSetup class to use, could also be implemented so admin can use
 	 * 
 	 * @param id
 	 * @param firstName
@@ -66,9 +89,6 @@ public class Database implements DBCredentials {
 	 */
 	public void insertStudent(int id, String firstName, String lastName) {
 		try {
-			// student is the table name
-			// id, firstname, lastname are the columns
-			// try changing mydb.student to just student if not working
 			String query = "INSERT INTO mydb.student (id, firstname, lastname) VALUES (?, ?, ?)";
 			PreparedStatement pStat = conn.prepareStatement(query);
 
@@ -81,19 +101,46 @@ public class Database implements DBCredentials {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Inserts a course into the database
+	 * For DBSetup class to use, could also be implemented so admin can use
+	 * 
+	 * @param id
+	 * @param courseName
+	 * @param courseNumber
+	 */
+	public void insertCourse(int id, String courseName, String courseNumber, String section, int seats) {
+		try {
+			String query = "INSERT INTO mydb.coursecatalogue (id, coursename, coursenumber, section, seats) VALUES(?, ?, ?, ?, ?)";
+			PreparedStatement pStat = conn.prepareStatement(query);
+
+			pStat.setInt(1, id);
+			pStat.setString(2, courseName);
+			pStat.setString(3, courseNumber);
+			pStat.setString(4, section);
+			pStat.setInt(5, seats);
+			pStat.executeUpdate();
+			pStat.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Checks if student is registered in the database
+	 * 
 	 * @param studentId the id of the student
 	 * @return true if the student is in the database, false otherwise
 	 */
 	public boolean isStudent(String studentId) {
 		try {
 			int ID = Integer.parseInt(studentId);
-			String query = "SELECT * FROM mydb.student where id = ID";
+			String query = "SELECT * FROM mydb.student where id = ?";
 			PreparedStatement pStat = conn.prepareStatement(query);
 			pStat.setInt(1, ID);
 			rs = pStat.executeQuery();
+			
 			if (rs.next()) {
 				return true;
 			}
@@ -102,74 +149,122 @@ public class Database implements DBCredentials {
 		}
 		return false;
 	}
-
-	public void deleteUser(int id) {
-		String query = "DELETE FROM student WHERE id = 'id'";
+	
+	/**
+	 * Checks if there are still free seats in a course section in database
+	 * 
+	 * @return true if there are still available seats, false otherwise
+	 */
+	public boolean isAvailableSeats(String courseName, String courseNumber, String section) {
 		try {
+			String query = "SELECT * FROM coursecatalogue where coursename = ? and coursenumber = ? and section = ?";
 			PreparedStatement pStat = conn.prepareStatement(query);
-			pStat.executeUpdate();
+			pStat.setString(1, courseName);
+			pStat.setString(2, courseNumber);
+			pStat.setString(3, section);
+			rs = pStat.executeQuery();
+			rs.next();
+			
+			if (rs.getInt("seats") <= 0)
+			{
+				return false;
+			}
+			
 			pStat.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		return true;
 	}
-
-	public void insertCourse(int id, String courseName, String courseNumber) {
+	
+	/**
+	 * Increases available seats in a section by one
+	 * Call this method when a student successfully dropped an enrolled course
+	 */
+	public void incrementAvailableSeats(String courseName, String courseNumber, String section) {
 		try {
-			// coursecatalogue is the table name
-			// id, coursename, coursenumber are the columns
-			// try changing mydb.coursecatalogue to just coursecatalogue if not working
-			String query = "INSERT INTO mydb.coursecatalogue (id, coursename, coursenumber) VALUES(?, ?, ?)";
-			PreparedStatement pStat = conn.prepareStatement(query);
-
-			pStat.setInt(1, id);
-			pStat.setString(2, courseName);
-			pStat.setString(3, courseNumber);
-			pStat.executeUpdate();
-			pStat.close();
+			String query1 = "SELECT * FROM coursecatalogue where coursename = ? and coursenumber = ? and section = ?";
+			PreparedStatement pStat1 = conn.prepareStatement(query1);
+			pStat1.setString(1, courseName);
+			pStat1.setString(2, courseNumber);
+			pStat1.setString(3, section);
+			rs = pStat1.executeQuery();
+			rs.next();
+			int id = rs.getInt("id");
+			int newSeats = rs.getInt("seats") + 1;
+			
+			String query2 = "UPDATE mydb.coursecatalogue SET seats = ? WHERE (id = ?)";
+			PreparedStatement pStat2 = conn.prepareStatement(query2);
+			pStat2.setInt(1, newSeats);
+			pStat2.setInt(2, id);
+			pStat2.executeUpdate();
+			
+			pStat1.close();
+			pStat2.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Decreases available seats in a section by one
+	 * Call this method when a student successfully enrolled in a course
+	 */
+	public void decrementAvailableSeats(String courseName, String courseNumber, String section) {
+		try {
+			String query1 = "SELECT * FROM coursecatalogue where coursename = ? and coursenumber = ? and section = ?";
+			PreparedStatement pStat1 = conn.prepareStatement(query1);
+			pStat1.setString(1, courseName);
+			pStat1.setString(2, courseNumber);
+			pStat1.setString(3, section);
+			rs = pStat1.executeQuery();
+			rs.next();
+			int id = rs.getInt("id");
+			int newSeats = rs.getInt("seats") - 1;
+			
+			String query2 = "UPDATE mydb.coursecatalogue SET seats = ? WHERE (id = ?)";
+			PreparedStatement pStat2 = conn.prepareStatement(query2);
+			pStat2.setInt(1, newSeats);
+			pStat2.setInt(2, id);
+			pStat2.executeUpdate();
+			
+			pStat1.close();
+			pStat2.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Gets a course from the catalogue from database
+	 * Gets a course and all of its sections from the catalogue from database
 	 * 
-	 * @return the whole course from  catalogue from the database as a single string if the course is found 
+	 * @return the course and its sections from  catalogue from the database as a single string if found else return course not found
 	 */
 	public String getCourse(String courseName, String courseNumber) {
 		String s = "";
 
 		try {
-
-			// try changing mydb.coursecatalogue to just coursecatalogue if not working
-			String query = "SELECT * FROM coursecatalogue where coursename = 'courseName' and coursenumber = 'courseNumber'";
+			String query = "SELECT * FROM coursecatalogue where coursename = ? and coursenumber = ?";
 			PreparedStatement stmt = conn.prepareStatement(query);
 			stmt.setString(1, courseName);
 			stmt.setString(2, courseNumber);
 			rs = stmt.executeQuery();
-			if (rs.next()) {
-				s += rs.getString("coursename") + " " + rs.getString("coursenumber") + "\n";
+			
+			if (rs.next())
+			{
+				while (rs.next()) {
+					s += rs.getString("coursename") + " " + rs.getString("coursenumber") + " | Section: " +  rs.getString("section") + ", Available Seats: " + rs.getInt("seats") + "\n";
+				}
+			} else {
+				s += "Course not found.";
 			}
-			else
-				s+= "Course not found";
+			
+			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return s;
-	}
-	
-	
-
-	public void deleteCourse(String name, String num) {
-		String query = "DELETE FROM coursecatalogue WHERE coursename = 'name' and coursenumber = 'num'";
-		try {
-			PreparedStatement pStat = conn.prepareStatement(query);
-			pStat.executeUpdate();
-			pStat.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -181,18 +276,15 @@ public class Database implements DBCredentials {
         String s = "";
 
         try {
-
-            // try changing mydb.coursecatalogue to just coursecatalogue if not working
             Statement stmt = conn.createStatement();
             String query = "SELECT * FROM coursecatalogue";
             rs = stmt.executeQuery(query);
 
             while (rs.next()) {
-                s = s + rs.getString("coursename") + " " + rs.getString("coursenumber") + "\n";
+            	s += rs.getString("coursename") + " " + rs.getString("coursenumber") + " | Section: " +  rs.getString("section") + ", Available Seats: " + rs.getInt("seats") + "\n";
             }
 
             stmt.close();
-            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

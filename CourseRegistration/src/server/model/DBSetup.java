@@ -22,18 +22,29 @@ public class DBSetup {
 		dbsetup.insertStudent(5, "Bob", "MacDonald");
 		
 		//Add courses to database
-		dbsetup.insertCourse(1, "ENGG", "200");
-		dbsetup.insertCourse(2, "ENGG", "201");
-		dbsetup.insertCourse(3, "ENGG", "202");
-		dbsetup.insertCourse(4, "ENGG", "225");
-		dbsetup.insertCourse(5, "ENGG", "233");
-		dbsetup.insertCourse(6, "MATH", "211");
-		dbsetup.insertCourse(7, "MATH", "275");
-		dbsetup.insertCourse(8, "MATH", "277");
-		dbsetup.insertCourse(9, "MATH", "200");
-		dbsetup.insertCourse(10, "PHYS", "259");
-		dbsetup.insertCourse(11, "CHEM", "209");
-		
+		dbsetup.insertCourse(1, "ENGG", "200", "01", 100);
+		dbsetup.insertCourse(2, "ENGG", "200", "02", 100);
+		dbsetup.insertCourse(3, "ENGG", "201", "01", 100);
+		dbsetup.insertCourse(4, "ENGG", "201", "02", 100);
+		dbsetup.insertCourse(5, "ENGG", "202", "01", 100);
+		dbsetup.insertCourse(6, "ENGG", "202", "02", 100);
+		dbsetup.insertCourse(7, "ENGG", "225", "01", 100);
+		dbsetup.insertCourse(8, "ENGG", "225", "02", 100);
+		dbsetup.insertCourse(9, "ENGG", "233", "01", 100);
+		dbsetup.insertCourse(10, "ENGG", "233", "02", 100);
+		dbsetup.insertCourse(11, "MATH", "211", "01", 100);
+		dbsetup.insertCourse(12, "MATH", "211", "02", 100);
+		dbsetup.insertCourse(13, "MATH", "275", "01", 100);
+		dbsetup.insertCourse(14, "MATH", "275", "02", 100);
+		dbsetup.insertCourse(15, "MATH", "277", "01", 100);
+		dbsetup.insertCourse(16, "MATH", "277", "02", 100);
+		dbsetup.insertCourse(17, "MATH", "200", "01", 100);
+		dbsetup.insertCourse(18, "MATH", "200", "02", 100);
+		dbsetup.insertCourse(19, "PHYS", "259", "01", 100);
+		dbsetup.insertCourse(20, "PHYS", "259", "02", 100);
+		dbsetup.insertCourse(21, "CHEM", "209", "01", 100);
+		dbsetup.insertCourse(22, "CHEM", "209", "02", 100);
+				
 		dbsetup.closeConnection();
 	}
 }

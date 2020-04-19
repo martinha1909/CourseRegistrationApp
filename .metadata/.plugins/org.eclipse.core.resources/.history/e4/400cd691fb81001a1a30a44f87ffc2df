@@ -1,0 +1,40 @@
+package server.model;
+
+/**
+ * A first time setup of databases and tables creation.
+ * The default schema name is mydb.
+ * Only RUN this ONCE. 
+ * 
+ * @author Duan Le
+ */
+public class DBSetup {
+	
+	public static void main(String[] args) {
+		Database dbsetup = new Database();
+		dbsetup.initializeConnection();
+		dbsetup.createTables();
+		
+		//Add students to database
+		dbsetup.insertStudent(1, "Duan", "Le");
+		dbsetup.insertStudent(2, "Martin", "Ha");
+		dbsetup.insertStudent(3, "Ayush", "Chaudhari");
+		dbsetup.insertStudent(4, "John", "Smith");
+		dbsetup.insertStudent(5, "Bob", "MacDonald");
+		
+		//Add courses to database
+		dbsetup.insertCourse(1, "ENGG", "200", "01", 100);
+		dbsetup.insertCourse(1, "ENGG", "200");
+		dbsetup.insertCourse(2, "ENGG", "201", "01", 100);
+		dbsetup.insertCourse(3, "ENGG", "202", "01", 100);
+		dbsetup.insertCourse(4, "ENGG", "225", "01", 100);
+		dbsetup.insertCourse(5, "ENGG", "233", "01", 100);
+		dbsetup.insertCourse(6, "MATH", "211", "01", 100);
+		dbsetup.insertCourse(7, "MATH", "275", "01", 100);
+		dbsetup.insertCourse(8, "MATH", "277", "01", 100);
+		dbsetup.insertCourse(9, "MATH", "200", "01", 100);
+		dbsetup.insertCourse(10, "PHYS", "259", "01", 100);
+		dbsetup.insertCourse(11, "CHEM", "209", "01", 100);
+		
+		dbsetup.closeConnection();
+	}
+}
