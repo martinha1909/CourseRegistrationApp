@@ -1,5 +1,5 @@
 package server.controller;
-import server.model.RegistrationApp;
+import server.model.Database;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,16 +13,16 @@ public class Logic implements Runnable{
 	private Socket theSocket;
 	private BufferedReader socketIn;
 	private PrintWriter socketOut;
-	private RegistrationApp theLogic;
+	private Database theDataBase;
 	
-	public Logic(Socket s)
+	public Logic(Socket s, Database d)
 	{
 		try
 		{
 			theSocket = s;
 			socketIn = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
 			socketOut = new PrintWriter(theSocket.getOutputStream(),true);
-			theLogic = new RegistrationApp(theSocket,socketOut);
+			theDataBase = d;
 		}catch(IOException e)
 		{
 			System.err.println("Error is present");
@@ -56,36 +56,37 @@ public class Logic implements Runnable{
 	
 private void switcher(String[] word,int num) {
 		
+	String send = "";
 		switch(num)
 		{
 			case 1:
 				
-				theLogic.searchCatalogueCourses(word[0],word[1]);
-				
+				send = theDataBase.searchCatalogueCourses(word[0],word[1]);
+				socketOut.println(send);
 				break;
 				
 			case 2:
 				
-				theLogic.addStudentCourses(word[0],word[1],word[2],word[3]);
-				
+				send = theDataBase.addStudentCourses(word[0],word[1],word[2],word[3]);
+				socketOut.println(send);
 				break;
 				
 			case 3:
 
-				theLogic.removeStudentCourses(word[0],word[1], word[2]);
-				
+				send = theDataBase.removeStudentCourses(word[0],word[1], word[2]);
+				socketOut.println(send);
 				break;
 				
 			case 4:
 		
-				theLogic.viewAllCourses();
-				
+				send = theDataBase.getCourseCatalogue();
+				socketOut.println(send);
 				break;
 				
 			case 5:
 			
-				theLogic.viewAllStudentCourses(word[0]);
-				
+				send = theDataBase.viewAllStudentCourses(word[0]);
+				socketOut.println(send);
 				break;
 		}
 		
