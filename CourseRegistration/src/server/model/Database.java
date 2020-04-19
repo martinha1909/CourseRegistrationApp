@@ -214,16 +214,16 @@ public class Database implements DBCredentials {
 			if (rs.next()) {
 				id = rs.getInt("id");
 				newSeats = rs.getInt("seats") + 1;
+
+				String query2 = "UPDATE mydb.coursecatalogue SET seats = ? WHERE (id = ?)";
+				PreparedStatement pStat2 = conn.prepareStatement(query2);
+				pStat2.setInt(1, newSeats);
+				pStat2.setInt(2, id);
+				pStat2.executeUpdate();
+				pStat2.close();
 			}
-			
-			String query2 = "UPDATE mydb.coursecatalogue SET seats = ? WHERE (id = ?)";
-			PreparedStatement pStat2 = conn.prepareStatement(query2);
-			pStat2.setInt(1, newSeats);
-			pStat2.setInt(2, id);
-			pStat2.executeUpdate();
-			
+					
 			pStat1.close();
-			pStat2.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -247,16 +247,16 @@ public class Database implements DBCredentials {
 			if (rs.next()) {
 				id = rs.getInt("id");
 				newSeats = rs.getInt("seats") - 1;
+
+				String query2 = "UPDATE mydb.coursecatalogue SET seats = ? WHERE (id = ?)";
+				PreparedStatement pStat2 = conn.prepareStatement(query2);
+				pStat2.setInt(1, newSeats);
+				pStat2.setInt(2, id);
+				pStat2.executeUpdate();
+				pStat2.close();
 			}
 			
-			String query2 = "UPDATE mydb.coursecatalogue SET seats = ? WHERE (id = ?)";
-			PreparedStatement pStat2 = conn.prepareStatement(query2);
-			pStat2.setInt(1, newSeats);
-			pStat2.setInt(2, id);
-			pStat2.executeUpdate();
-			
 			pStat1.close();
-			pStat2.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
