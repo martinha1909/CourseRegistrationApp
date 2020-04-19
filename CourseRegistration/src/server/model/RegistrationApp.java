@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * @author Vu Ha
  */
 public class RegistrationApp {
+	private ArrayList<Student> students;
 	private Course theCourse;
 	private CourseCatalogue cat;
 	private PrintWriter socketOut;
@@ -22,9 +23,14 @@ public class RegistrationApp {
 	
 	public RegistrationApp(Socket s, PrintWriter p, Database theDataBase)
 	{
+		students = new ArrayList<Student>();
 		theSocket = s;
 		socketOut = p;
 		db = theDataBase;
+		for(int i=1; i<=db.getNumberOfRows("mydb.student"); i++)
+		{
+			students.add(db.searchStudent(i));
+		}
 		cat = new CourseCatalogue(db);
 	}
 	
@@ -34,15 +40,17 @@ public class RegistrationApp {
 		int courseNum = Integer.parseInt(courseN);
 		int section = Integer.parseInt(sec);
 		
-		Registration t = new Registration(db.getStudent(StudentId));
-		int i = 0;
-		Student temp = db.getStudent(StudentId);
-
 		
+		int i = 0;
+		Student temp = null;
+		for(i=0; i<students.size(); i++)
+			if(students.get(i).getStudentId() == id)
+				temp = students.get(i);
+
+		Registration t = new Registration(temp);
 		theCourse = cat.searchCat(courseName, courseNum);
 		if(theCourse!=null)
 		{
-			
 			t.completeRegistration(temp,theCourse.getCourseOfferingAt(section-1));
 			db.decrementAvailableSeats(courseName, courseN, sec);
 			sendString("Registration completed");
@@ -63,7 +71,12 @@ public class RegistrationApp {
 		int id = Integer.parseInt(StudentId);
 
 		int i = 0;
-		Student temp = db.getStudent(StudentId);
+		Student temp = null;
+		for(i=0; i<students.size(); i++)
+			if(students.get(i).getStudentId() == id)
+				temp = students.get(i);
+
+		Registration t = new Registration(temp);
 		if(temp!=null) {
 			String toSend = temp.removeCourse(courseName, num);
 			db.incrementAvailableSeats(courseName, courseNum, courseSec);
@@ -79,10 +92,12 @@ public class RegistrationApp {
 	public void viewAllStudentCourses(String StudentId) 
 	{
 		int id = Integer.parseInt(StudentId);
-
-
 		int i = 0;
-		Student temp = db.getStudent(StudentId);
+		Student temp = null;
+		for(i=0; i<students.size(); i++)
+			if(students.get(i).getStudentId() == id)
+				temp = students.get(i);
+
 		
 		String toSend = temp.printAllStudentCourses(theSocket);
 		sendString(toSend);

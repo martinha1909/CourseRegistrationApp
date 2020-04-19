@@ -81,7 +81,6 @@ public class Student {
 		} catch (IOException e) {
 			e.printStackTrace();
 		};
-		System.out.println(sender);
 		return sender;
 	}
 	public String getStudentName() {
