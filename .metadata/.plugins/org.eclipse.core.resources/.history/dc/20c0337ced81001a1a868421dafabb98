@@ -1,0 +1,11 @@
+package server.model;
+
+/**
+ * A first time setup of databases and tables creation.
+ * Only RUN this ONCE. 
+ * 
+ * @author Duan Le
+ */
+public class DBSetup {
+	
+}

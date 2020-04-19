@@ -22,29 +22,10 @@ public class Database implements DBCredentials {
 
 	public void closeConnection() {
 		try {
-			rs.close();
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Creates a schema, ONLY RUN ONCE
-	 */
-	public void createSchema() {
-		String query = "CREATE SCHEMA mydb";
-
-		try {
-			Statement stat = conn.createStatement();
-			stat.executeUpdate(query);
-			stat.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Schema could not be created.");
-		}
-
-		System.out.println("Schema created successfully.");
 	}
 
 	/**
@@ -142,8 +123,8 @@ public class Database implements DBCredentials {
 			PreparedStatement pStat = conn.prepareStatement(query);
 
 			pStat.setInt(1, id);
-			pStat.setString(2, "coursename");
-			pStat.setString(3, "coursenumber");
+			pStat.setString(2, courseName);
+			pStat.setString(3, courseNumber);
 			pStat.executeUpdate();
 			pStat.close();
 		} catch (SQLException e) {
@@ -156,19 +137,19 @@ public class Database implements DBCredentials {
 	 * 
 	 * @return the whole course from  catalogue from the database as a single string if the course is found 
 	 */
-	public String getCourse(String name, String num) {
+	public String getCourse(String courseName, String courseNumber) {
 		String s = "";
 
 		try {
 
 			// try changing mydb.coursecatalogue to just coursecatalogue if not working
-			String query = "SELECT * FROM coursecatalogue where coursename = name and coursenumber = num";
+			String query = "SELECT * FROM coursecatalogue where coursename = 'courseName' and coursenumber = 'courseNumber'";
 			PreparedStatement stmt = conn.prepareStatement(query);
-			stmt.setString(1, "coursename");
-			stmt.setString(2, "coursenumber");
+			stmt.setString(1, courseName);
+			stmt.setString(2, courseNumber);
 			rs = stmt.executeQuery();
 			if (rs.next()) {
-				s+= rs.getString("coursename") + " " + rs.getString("coursenumber") + "\n";
+				s += rs.getString("coursename") + " " + rs.getString("coursenumber") + "\n";
 			}
 			else
 				s+= "Course not found";

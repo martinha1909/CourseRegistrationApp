@@ -1,0 +1,18 @@
+package server.model;
+
+/**
+ * A first time setup of databases and tables creation.
+ * Only RUN this ONCE. 
+ * 
+ * @author Duan Le
+ */
+public class DBSetup {
+	
+	
+	public static void main(String[] args) {
+		Database dbsetup = new Database();
+		dbsetup.initializeConnection();
+		dbsetup.createTables();
+		dbsetup.closeConnection();
+	}
+}

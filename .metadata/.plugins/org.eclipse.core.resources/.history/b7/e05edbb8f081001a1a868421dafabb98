@@ -1,0 +1,202 @@
+package server.model;
+
+import java.sql.*;
+
+public class Database implements DBCredentials {
+	private Connection conn;
+	private ResultSet rs;
+
+	public void initializeConnection() {
+		try {
+			Driver driver = new com.mysql.cj.jdbc.Driver();
+			DriverManager.registerDriver(driver);
+
+			conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Connection could not be established.");
+		}
+
+		System.out.println("Connection successfully established.");
+	}
+
+	public void closeConnection() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Create a student table and a course catalogue table, ONLY RUN ONCE
+	 */
+	public void createTables() {
+		String query1 = "CREATE TABLE student " + 
+					   "(id INTEGER not NULL, " + 
+					   " firstname VARCHAR(255), " + 
+					   " lastname VARCHAR(255), " + 
+					   " PRIMARY KEY ( id ))";
+
+		String query2 = "CREATE TABLE coursecatalogue " + 
+					   "(id INTEGER not NULL, " + 
+					   " coursename VARCHAR(255), " + 
+					   " coursenumber VARCHAR(255), " + 
+					   " PRIMARY KEY ( id ))";
+
+		try {
+			Statement stat = conn.createStatement();
+			stat.executeUpdate(query1);
+			stat.executeUpdate(query2);
+			stat.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Table(s) could not be created.");
+		}
+		
+		System.out.println("Tables created successfully in given schema.");
+	}
+
+	/**
+	 * Inserts a student into the database
+	 * 
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 */
+	public void insertStudent(int id, String firstName, String lastName) {
+		try {
+			// student is the table name
+			// id, firstname, lastname are the columns
+			// try changing mydb.student to just student if not working
+			String query = "INSERT INTO mydb.student (id, firstname, lastname) VALUES (?, ?, ?)";
+			PreparedStatement pStat = conn.prepareStatement(query);
+
+			pStat.setInt(1, id);
+			pStat.setString(2, firstName);
+			pStat.setString(3, lastName);
+			pStat.executeUpdate();
+			pStat.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Checks if student is registered in the database
+	 * @param studentId the id of the student
+	 * @return true if the student is in the database, false otherwise
+	 */
+	public boolean isStudent(String studentId) {
+		try {
+			int ID = Integer.parseInt(studentId);
+			String query = "SELECT * FROM mydb.student where id = ID";
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.setInt(1, ID);
+			rs = pStat.executeQuery();
+			if (rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public void deleteUser(int id) {
+		String query = "DELETE FROM student WHERE id = 'id'";
+		try {
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.executeUpdate();
+			pStat.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void insertCourse(int id, String courseName, String courseNumber) {
+		try {
+			// coursecatalogue is the table name
+			// id, coursename, coursenumber are the columns
+			// try changing mydb.coursecatalogue to just coursecatalogue if not working
+			String query = "INSERT INTO mydb.coursecatalogue (id, coursename, coursenumber) VALUES(?, ?, ?)";
+			PreparedStatement pStat = conn.prepareStatement(query);
+
+			pStat.setInt(1, id);
+			pStat.setString(2, courseName);
+			pStat.setString(3, couseNumber);
+			pStat.executeUpdate();
+			pStat.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Gets a course from the catalogue from database
+	 * 
+	 * @return the whole course from  catalogue from the database as a single string if the course is found 
+	 */
+	public String getCourse(String name, String num) {
+		String s = "";
+
+		try {
+
+			// try changing mydb.coursecatalogue to just coursecatalogue if not working
+			String query = "SELECT * FROM coursecatalogue where coursename = name and coursenumber = num";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, "coursename");
+			stmt.setString(2, "coursenumber");
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				s+= rs.getString("coursename") + " " + rs.getString("coursenumber") + "\n";
+			}
+			else
+				s+= "Course not found";
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return s;
+	}
+	
+	
+
+	public void deleteCourse(String name, String num) {
+		String query = "DELETE FROM coursecatalogue WHERE coursename = 'name' and coursenumber = 'num'";
+		try {
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.executeUpdate();
+			pStat.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+     * Gets the course catalogue
+     * 
+     * @return the whole course catalogue from the database as a single string
+     */
+    public String getCourseCatalogue() {
+        String s = "";
+
+        try {
+
+            // try changing mydb.coursecatalogue to just coursecatalogue if not working
+            Statement stmt = conn.createStatement();
+            String query = "SELECT * FROM coursecatalogue";
+            rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                s = s + rs.getString("coursename") + " " + rs.getString("coursenumber") + "\n";
+            }
+
+            stmt.close();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return s;
+    }
+}
