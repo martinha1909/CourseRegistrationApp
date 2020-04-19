@@ -89,7 +89,7 @@ public class Database implements DBCredentials {
 	 */
 	public void insertStudent(int id, String firstName, String lastName) {
 		try {
-			String query = "INSERT INTO student (id, firstname, lastname) VALUES (?, ?, ?)";
+			String query = "INSERT INTO mydb.student (id, firstname, lastname) VALUES (?, ?, ?)";
 			PreparedStatement pStat = conn.prepareStatement(query);
 
 			pStat.setInt(1, id);
@@ -106,7 +106,7 @@ public class Database implements DBCredentials {
 	{
 		Student t = null;;
 		try {
-			String query = "SELECT * FROM student where id = studentId";
+			String query = "SELECT * FROM mydb.student where id = ?";
 			PreparedStatement pStat = conn.prepareStatement(query);
 			pStat.setInt(1, studentId);
 			rs = pStat.executeQuery();
@@ -129,7 +129,7 @@ public class Database implements DBCredentials {
 	 */
 	public void insertCourse(int id, String courseName, String courseNumber, String section, int seats) {
 		try {
-			String query = "INSERT INTO coursecatalogue (id, coursename, coursenumber, section, seats) VALUES(?, ?, ?, ?, ?)";
+			String query = "INSERT INTO mydb.coursecatalogue (id, coursename, coursenumber, section, seats) VALUES(?, ?, ?, ?, ?)";
 			PreparedStatement pStat = conn.prepareStatement(query);
 
 			pStat.setInt(1, id);
@@ -153,7 +153,7 @@ public class Database implements DBCredentials {
 	public boolean isStudent(String studentId) {
 		try {
 			int ID = Integer.parseInt(studentId);
-			String query = "SELECT * FROM student where id = ?";
+			String query = "SELECT * FROM mydb.student where id = ?";
 			PreparedStatement pStat = conn.prepareStatement(query);
 			pStat.setInt(1, ID);
 			rs = pStat.executeQuery();
@@ -176,7 +176,7 @@ public class Database implements DBCredentials {
 	 */
 	public boolean isAvailableSeats(String courseName, String courseNumber, String section) {
 		try {
-			String query = "SELECT * FROM coursecatalogue where coursename = ? and coursenumber = ? and section = ?";
+			String query = "SELECT * FROM mydb.coursecatalogue where coursename = ? and coursenumber = ? and section = ?";
 			PreparedStatement pStat = conn.prepareStatement(query);
 			pStat.setString(1, courseName);
 			pStat.setString(2, courseNumber);
@@ -203,7 +203,7 @@ public class Database implements DBCredentials {
 	 */
 	public void incrementAvailableSeats(String courseName, String courseNumber, String section) {
 		try {
-			String query1 = "SELECT * FROM coursecatalogue where coursename = ? and coursenumber = ? and section = ?";
+			String query1 = "SELECT * FROM mydb.coursecatalogue where coursename = ? and coursenumber = ? and section = ?";
 			PreparedStatement pStat1 = conn.prepareStatement(query1);
 			pStat1.setString(1, courseName);
 			pStat1.setString(2, courseNumber);
@@ -213,7 +213,7 @@ public class Database implements DBCredentials {
 			int id = rs.getInt("id");
 			int newSeats = rs.getInt("seats") + 1;
 			
-			String query2 = "UPDATE coursecatalogue SET seats = ? WHERE (id = ?)";
+			String query2 = "UPDATE mydb.coursecatalogue SET seats = ? WHERE (id = ?)";
 			PreparedStatement pStat2 = conn.prepareStatement(query2);
 			pStat2.setInt(1, newSeats);
 			pStat2.setInt(2, id);
@@ -232,7 +232,7 @@ public class Database implements DBCredentials {
 	 */
 	public void decrementAvailableSeats(String courseName, String courseNumber, String section) {
 		try {
-			String query1 = "SELECT * FROM coursecatalogue where coursename = ? and coursenumber = ? and section = ?";
+			String query1 = "SELECT * FROM mydb.coursecatalogue where coursename = ? and coursenumber = ? and section = ?";
 			PreparedStatement pStat1 = conn.prepareStatement(query1);
 			pStat1.setString(1, courseName);
 			pStat1.setString(2, courseNumber);
@@ -242,7 +242,7 @@ public class Database implements DBCredentials {
 			int id = rs.getInt("id");
 			int newSeats = rs.getInt("seats") - 1;
 			
-			String query2 = "UPDATE coursecatalogue SET seats = ? WHERE (id = ?)";
+			String query2 = "UPDATE mydb.coursecatalogue SET seats = ? WHERE (id = ?)";
 			PreparedStatement pStat2 = conn.prepareStatement(query2);
 			pStat2.setInt(1, newSeats);
 			pStat2.setInt(2, id);
@@ -265,7 +265,7 @@ public class Database implements DBCredentials {
 		String s = "";
 
 		try {
-			String query = "SELECT * FROM coursecatalogue where coursename = courseName and coursenumber = num";
+			String query = "SELECT * FROM mydb.coursecatalogue where coursename = ? and coursenumber = ?";
 			PreparedStatement stmt = conn.prepareStatement(query);
 			stmt.setString(1, courseName);
 			stmt.setInt(2, num);
@@ -297,7 +297,7 @@ public class Database implements DBCredentials {
 
         try {
             Statement stmt = conn.createStatement();
-            String query = "SELECT * FROM coursecatalogue";
+            String query = "SELECT * FROM mydb.coursecatalogue";
             rs = stmt.executeQuery(query);
 
             while (rs.next()) {
@@ -317,7 +317,7 @@ public class Database implements DBCredentials {
     	int count = 0;;
     	try {
         	Statement s = conn.createStatement();
-			rs = s.executeQuery("SELECT COUNT(*) AS rowcount FROM tableName");
+			rs = s.executeQuery("SELECT COUNT(*) AS rowcount FROM " + tableName);
 			rs.next();
 			count = rs.getInt("rowcount");
 			rs.close();
@@ -332,7 +332,7 @@ public class Database implements DBCredentials {
     {
     	Course c = null;
     	try {
-    		String query = "SELECT * FROM " + tableName + " where id = rowId";
+    		String query = "SELECT * FROM " + tableName + " where id = ?";
 			PreparedStatement pStat = conn.prepareStatement(query);
 			pStat.setInt(1, rowId);
 			rs = pStat.executeQuery();
@@ -351,7 +351,7 @@ public class Database implements DBCredentials {
     {
     	int section = 0;
     	try {
-    		String query = "SELECT * FROM coursecatalogue where id = rowId";
+    		String query = "SELECT * FROM mydb.coursecatalogue where id = ?";
 			PreparedStatement pStat = conn.prepareStatement(query);
 			pStat.setInt(1, rowId);
 			rs = pStat.executeQuery();
@@ -370,7 +370,7 @@ public class Database implements DBCredentials {
     {
     	int cap = 0;
     	try {
-    		String query = "SELECT * FROM coursecatalogue where id = rowId";
+    		String query = "SELECT * FROM mydb.coursecatalogue where id = ?";
 			PreparedStatement pStat = conn.prepareStatement(query);
 			pStat.setInt(1, rowId);
 			rs = pStat.executeQuery();
@@ -385,15 +385,15 @@ public class Database implements DBCredentials {
     	return cap;
     }
 
-	public Student getStudent(int studentId) {
+	public Student getStudent(String studentId) {
 		Student s = null;
     	try {
-    		String query = "SELECT * FROM 	student where id = studentId";
+    		String query = "SELECT * FROM 	mydb.student where id = ?";
 			PreparedStatement pStat = conn.prepareStatement(query);
-			pStat.setInt(1, studentId);
+			pStat.setString(1, studentId);
 			rs = pStat.executeQuery();
 			if(rs.next())
-				s = new Student(rs.getString("fristname"), Integer.parseInt(rs.getString("id")));
+				s = new Student(rs.getString("firstname"), Integer.parseInt(rs.getString("id")));
 			pStat.close();
 			rs.close();
 		} catch (SQLException e) {

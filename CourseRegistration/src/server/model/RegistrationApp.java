@@ -34,9 +34,9 @@ public class RegistrationApp {
 		int courseNum = Integer.parseInt(courseN);
 		int section = Integer.parseInt(sec);
 		
-		Registration t = new Registration(db.getStudent(id));
+		Registration t = new Registration(db.getStudent(StudentId));
 		int i = 0;
-		Student temp = db.getStudent(id);
+		Student temp = db.getStudent(StudentId);
 
 		
 		theCourse = cat.searchCat(courseName, courseNum);
@@ -63,7 +63,7 @@ public class RegistrationApp {
 		int id = Integer.parseInt(StudentId);
 
 		int i = 0;
-		Student temp = db.getStudent(id);
+		Student temp = db.getStudent(StudentId);
 		if(temp!=null) {
 			String toSend = temp.removeCourse(courseName, num);
 			db.decrementAvailableSeats(courseName, courseNum, courseSec);
@@ -82,7 +82,7 @@ public class RegistrationApp {
 
 
 		int i = 0;
-		Student temp = db.getStudent(id);
+		Student temp = db.getStudent(StudentId);
 		
 		String toSend = temp.printAllStudentCourses(theSocket);
 		sendString(toSend);

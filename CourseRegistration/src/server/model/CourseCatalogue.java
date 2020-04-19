@@ -11,13 +11,14 @@ public class CourseCatalogue {
 	private ArrayList <Course> courseList;
 	private Database db;
 	public CourseCatalogue (Database theDataBase) {
+		courseList = new ArrayList<Course>();
 		db = theDataBase;
 		loadFromDataBase ();
 	}
 	
 	private void loadFromDataBase() {
 		setCourseList();
-		for(int i=1; i<=db.getNumberOfRows("coursecatalogue"); i++)
+		for(int i=1; i<=db.getNumberOfRows("mydb.coursecatalogue"); i++)
 		{
 			createCourseOffering(courseList.get(i-1), db.getSecNum(i), db.getSecCap(i));
 		}
@@ -49,9 +50,9 @@ public class CourseCatalogue {
 
 
 	public void setCourseList() {
-		for(int i=1; i<=db.getNumberOfRows("coursecatalogue"); i++)
+		for(int i=1; i<=db.getNumberOfRows("mydb.coursecatalogue"); i++)
 		{
-			courseList.add(db.getRow("coursecatalogue", i));
+			courseList.add(db.getRow("mydb.coursecatalogue", i));
 		}
 	}
 	@Override
