@@ -337,7 +337,7 @@ public class Database implements DBCredentials {
 			pStat.setInt(1, rowId);
 			rs = pStat.executeQuery();
 			if(rs.next())
-				c = new Course(rs.getString("coursename"), Integer.parseInt(rs.getString("courseNumber")));
+				c = new Course(rs.getString("coursename"), Integer.parseInt(rs.getString("coursenumber")));
 			pStat.close();
 			rs.close(); 
 		} catch (SQLException e) {
