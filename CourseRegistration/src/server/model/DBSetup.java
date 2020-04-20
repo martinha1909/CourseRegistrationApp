@@ -5,7 +5,10 @@ package server.model;
  * The default schema name is mydb.
  * Only RUN this ONCE. 
  * 
+ * @author Ayush Chaudhari
  * @author Duan Le
+ * @author Vu Ha
+ * @since April 20th 2020
  */
 public class DBSetup {
 	

@@ -10,20 +10,34 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /** 
+ * This class is used as a communication with the Client and the GUI
  * @author Ayush Chaudhari
  * @author Duan Le
  * @author Vu Ha
+ * @since April 20th 2020
  */
 public class GUICommunicator {
 
+	/**
+	 * The display
+	 */
 	GUI theGUI;
 	
+	/**
+	 * Initializes the display
+	 */
 	public GUICommunicator()
 	{
 		theGUI = new GUI("Course Registration App");
 	}
 
 
+	/**
+	 * Receives 2 strings from the Client and depending on them, it 
+	 * sends the information to the correct method in the GUI
+	 * @param response is the string that will be displayed on the GUI
+	 * @param number is used to determine which number was pressed
+	 */
 	public void sendResponse(String response,String number) {
 		
 		
@@ -64,6 +78,10 @@ public class GUICommunicator {
 	}
 
 
+	/**
+	 * Used to determine if a button has been pressed or not
+	 * @return true if a button was pressed, otherwise return false
+	 */
 	public boolean buttonPressed() {
 		
 		if(theGUI.pressed == true)

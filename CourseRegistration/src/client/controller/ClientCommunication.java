@@ -7,17 +7,38 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /** 
+ * The client side of the program that communicates with the server
  * @author Ayush Chaudhari
  * @author Duan Le
  * @author Vu Ha
  */
 public class ClientCommunication {
 	
+	/**
+	 * Variable that is used to access the options in the GUI
+	 */
 	private GUICommunicator theInput;
+	
+	/**
+	 * Used to send information to the Server
+	 */
 	private PrintWriter socketOut;
+	
+	/**
+	 * The connection to the Server
+	 */
 	private Socket theSocket;
+	
+	/**
+	 * Used to receive information from the Server
+	 */
 	private BufferedReader socketIn;
 	
+	/**
+	 * Initializes all connections for this class
+	 * @param serverName
+	 * @param portNumber
+	 */
 	public ClientCommunication(String serverName, int portNumber)
 	{
 		try
@@ -35,6 +56,9 @@ public class ClientCommunication {
 	}
 	
 	
+	/**
+	 * Method that is used to communicate with the Server, will be used to send and receive information
+	 */
 	public void communicate()
 	{
 		while (true)

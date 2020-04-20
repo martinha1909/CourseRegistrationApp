@@ -1,12 +1,16 @@
 package server.model;
 
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.sql.*;
 import java.util.ArrayList;
 
 /**
  * A simple database class to work with SQL servers. 
- * 
+ * @author Ayush Chaudhari
  * @author Duan Le
+ * @author Vu Ha
+ * @since April 20th 2020
  */
 public class Database implements DBCredentials {
 	
@@ -141,9 +145,11 @@ public class Database implements DBCredentials {
 	 * Checks if student is registered in the database
 	 * 
 	 * @param studentId the id of the student
+	 * @param socketOut 
+	 * @param theSocket 
 	 * @return true if the student is in the database, false otherwise
 	 */
-	public boolean isStudent(String studentId) {
+	public boolean isStudent(String studentId, Socket theSocket, PrintWriter socketOut) {
 		try {
 			int ID = Integer.parseInt(studentId);
 			String query = "SELECT * FROM mydb.student where id = ?";
@@ -158,6 +164,9 @@ public class Database implements DBCredentials {
 			pStat.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			socketOut.println("Student Id is not a number, please try again.");
+			socketOut.println("end");
 		}
 		return false;
 	}
@@ -474,6 +483,13 @@ public class Database implements DBCredentials {
     }
     
 
+    /**
+     * Checks to see if the inputed course is a valid course in the Database
+     * @param courseName
+     * @param courseNumber
+     * @param courseSec
+     * @return
+     */
 	public boolean isValidCourse(String courseName, String courseNumber, String courseSec) {
 		try {
 			String query = "SELECT * FROM mydb.coursecatalogue where coursename = ? and coursenumber = ? and section = ?";

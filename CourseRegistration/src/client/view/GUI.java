@@ -8,22 +8,58 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 /** 
+ * The display that will show the Client the options
  * @author Ayush Chaudhari
  * @author Duan Le
  * @author Vu Ha
+ * @since April 20th 2020
  */
 public class GUI
 {    
-    
+    /**
+     * Option 1
+     */
     public JButton b1;
+    
+    /**
+     * Option 2
+     */
     public JButton b2;
+    
+    /**
+     * Option 3
+     */
     public JButton b3;
+    
+    /**
+     * Option 4
+     */
     public JButton b4;
+    
+    /**
+     * Option 5
+     */
     public JButton b5;
+    
+    /**
+     * ArrayList of strings that will be used when sending an input to the Client
+     */
     public ArrayList <String> sending  = new ArrayList <String>();
+    
+    /**
+     * Used to tell if button is pressed or not
+     */
     public boolean pressed;
+    
+    /**
+     * A text area
+     */
     JTextArea textArea = new JTextArea(20, 40);
     
+    /**
+     * Creates the GUI
+     * @param name is the name of the GUI
+     */
     public GUI(String name)
     {
         JFrame frame = new JFrame(name);
@@ -69,6 +105,9 @@ public class GUI
         listeners();
     }
 
+    /**
+     * Listeners that add a string to the ArrayList when they are pressed
+     */
     private void listeners() {
         b1.addActionListener(new ActionListener() {
 
@@ -207,6 +246,10 @@ public class GUI
         
     }
 
+    /**
+     * Display for Option 1
+     * @param message is what will be displayed
+     */
     public void displayMessageWindowfor1(String message)
     {
         	JFrame frame = new JFrame("Course");
@@ -223,8 +266,12 @@ public class GUI
             frame.setLocationRelativeTo(null);
 
     }   
-
-      public void displayCatalogue(String allCourseList)
+    
+    /**
+     * Display for Option 4
+     * @param allCourseList is what will be displayed
+     */
+     public void displayCatalogue(String allCourseList)
         {
           
           
@@ -247,6 +294,10 @@ public class GUI
            
         }
     
+     /**
+      * Display for Option 5
+      * @param message is what will be displayed
+      */
     public void displayStudentCourses(String message)
     {
         JFrame frame = new JFrame("Enrolled Course(s)");
@@ -276,6 +327,10 @@ public class GUI
         frame.setLocationRelativeTo(null);
     }
 
+    /**
+     * Display for Option 2 and 3
+     * @param response is what will be displayed
+     */
 	public void displayMessageWindowfor2(String response) {
 		
 		JFrame frame = new JFrame();
