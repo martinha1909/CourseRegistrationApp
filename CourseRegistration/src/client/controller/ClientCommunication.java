@@ -30,7 +30,7 @@ public class ClientCommunication {
 			System.out.println("Connected to server");
 		}catch(IOException e)
 		{
-			System.err.println("Error!!!");
+			e.printStackTrace();
 		}
 	}
 	

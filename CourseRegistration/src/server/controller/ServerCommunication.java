@@ -33,7 +33,7 @@ public class ServerCommunication {
 			db.initializeConnection();
 		}catch(IOException e)
 		{
-			System.err.println("Error");
+			e.printStackTrace();
 		}
 	}
 	

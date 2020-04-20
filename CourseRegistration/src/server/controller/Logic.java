@@ -150,9 +150,15 @@ private void switcher(String[] word,int num) {
 			case 5:
 				enrolled = theDataBase.isStudent(word[0]);
 				if(enrolled)
+				{
 					socketOut.println(theDataBase.getCourseOfferings(word[0]));
+					socketOut.println("end");
+				}
 				else
+				{
 					socketOut.println("Student is not enrolled in the system end");
+					socketOut.println("end");
+				}
 				break;
 		}
 			socketOut.flush();
