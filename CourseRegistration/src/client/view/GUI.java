@@ -210,7 +210,7 @@ public class GUI
     public void displayMessageWindowfor1(String message)
     {
         	JFrame frame = new JFrame("Course");
-            JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            JPanel panel = new JPanel(new FlowLayout());
             textArea.setEditable(false);
             JScrollPane scrollPane = new JScrollPane(textArea);
             scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -262,7 +262,7 @@ public class GUI
         
         
       
-            textArea.append(message);
+        textArea.append(message);
         
         
         textPanel.add(scrollPane);
