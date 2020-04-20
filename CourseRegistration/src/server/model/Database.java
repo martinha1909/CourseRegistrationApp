@@ -110,22 +110,6 @@ public class Database implements DBCredentials {
 		}
 	}
 	
-	public Student searchStudent(int studentId)
-	{
-		Student t = null;;
-		try {
-			String query = "SELECT * FROM mydb.student where id = ?";
-			PreparedStatement pStat = conn.prepareStatement(query);
-			pStat.setInt(1, studentId);
-			rs = pStat.executeQuery();
-			if(rs.next())
-				t = new Student(rs.getString("firstname"), Integer.parseInt(rs.getString("id")));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return t;
-	}
 	
 	/**
 	 * Inserts a course into the database
@@ -476,8 +460,22 @@ public class Database implements DBCredentials {
     	return s;
     }
     
-    public static void main(String[] args) {
-    	Database db = new Database();
-    	db.initializeConnection();
-    }
+
+	public boolean isValidCourse(String courseName, String courseNumber, String courseSec) {
+		try {
+			String query = "SELECT * FROM mydb.coursecatalogue where coursename = ? and coursenumber = ? and section = ?";
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.setString(1, courseName);
+			pStat.setString(2, courseNumber);
+			pStat.setString(3, courseSec);
+			rs = pStat.executeQuery();
+			if(rs.next())
+				return true;
+			pStat.close();
+			rs.close();
+		}catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+		return false;
+	}
 }

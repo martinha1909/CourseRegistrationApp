@@ -1,7 +1,6 @@
 package server.controller;
 import server.*;
 import server.model.Database;
-import server.model.RegistrationApp;
 
 import java.io.BufferedReader;
 import java.io.IOException;

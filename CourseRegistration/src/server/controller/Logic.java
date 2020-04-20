@@ -1,6 +1,5 @@
 package server.controller;
 import server.model.Database;
-import server.model.RegistrationApp;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +14,6 @@ public class Logic implements Runnable{
 	private BufferedReader socketIn;
 	private PrintWriter socketOut;
 	private Database theDataBase;
-	private RegistrationApp theLogic;
 	
 	public Logic(Socket s, Database d)
 	{
@@ -24,7 +22,6 @@ public class Logic implements Runnable{
 			theSocket = s;
 			socketIn = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
 			socketOut = new PrintWriter(theSocket.getOutputStream(),true);
-			theLogic = new RegistrationApp(theSocket, socketOut, d);
 			theDataBase = d;
 		}catch(IOException e)
 		{
@@ -65,8 +62,8 @@ private void switcher(String[] word,int num) {
 			case 1:
 				
 				send = theDataBase.getCourse(word[0],word[1]);
-				send += "end";
 				socketOut.println(send);
+				socketOut.println("end");
 				send = "";
 				break;
 				
@@ -75,13 +72,36 @@ private void switcher(String[] word,int num) {
 				enrolled = theDataBase.isStudent(word[0]);
 				if(enrolled)
 				{
-					theLogic.addStudentCourses(word[0],word[1],word[2],word[3]);
+					if(theDataBase.isValidCourse(word[1], word[2], word[3]))
+					{
+						if(!theDataBase.isCourseOffering(word[0], word[1], word[2], word[3]))
+						{
+							if(theDataBase.isAvailableSeats(word[1], word[2], word[3]))
+							{
+								theDataBase.insertCourseOffering(word[0], word[1], word[2], word[3]);
+								theDataBase.decrementAvailableSeats(word[1], word[2], word[3]);
+							}
+							else {
+								socketOut.println("The course section is full");
+								socketOut.println("end");
+							}
+						}
+						else
+						{
+							socketOut.println("You have already enrolled in this course");
+							socketOut.println("end");
+						}
+					}
+					else {
+						socketOut.println("This course is not in the system.");
+						socketOut.println("end");
+					}
 				}
 				else
 				{
 					send = "Student is not enrolled in the system";
-					send += "end";
 					socketOut.println(send);
+					socketOut.println("end");
 					send = "";
 				}
 				break;
@@ -90,24 +110,43 @@ private void switcher(String[] word,int num) {
 				enrolled = theDataBase.isStudent(word[0]);
 				if(enrolled)
 				{
-					theLogic.removeStudentCourses(word[0],word[1], word[2], word[3]);
+					if(theDataBase.isValidCourse(word[1], word[2], word[3]))
+					{
+						if(theDataBase.isCourseOffering(word[0], word[1], word[2], word[3]))
+						{
+							theDataBase.deleteCourseOffering(word[0], word[1], word[2], word[3]);
+							theDataBase.incrementAvailableSeats(word[1], word[2], word[3]);
+						}
+						else
+						{
+							socketOut.println("You have already enrolled in this course");
+							socketOut.println("end");
+						}
+					}
+					else {
+						socketOut.println("This course is not in the system.");
+						socketOut.println("end");
+					}
 				}
 				else
-					socketOut.println("Student is not enrolled in the system end");
+				{
+					socketOut.println("Student is not enrolled in the system");
+					socketOut.println("end");
+				}
 				break;
 				
 			case 4:
 		
 				send = theDataBase.getCourseCatalogue();
-				send += "end";
 				socketOut.println(send);
+				socketOut.println("end");
 				send = "";
 				break;
 				
 			case 5:
 				enrolled = theDataBase.isStudent(word[0]);
 				if(enrolled)
-					theLogic.viewAllStudentCourses(word[0]);
+					theDataBase.getCourseOfferings(word[0]);
 				else
 					socketOut.println("Student is not enrolled in the system end");
 				break;
