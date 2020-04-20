@@ -1,6 +1,7 @@
 package server.model;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * A simple database class to work with SQL servers. 
@@ -441,14 +442,26 @@ public class Database implements DBCredentials {
 			stmt.setInt(1, studentid);
 			rs = stmt.executeQuery();
 			
-			if (rs.next())
-			{
-				s += rs.getString("coursename") + " " + rs.getString("coursenumber") + " | Section: " +  rs.getString("section") + ", Available Seats: " + rs.getInt("seats") + "\n";
+			ArrayList<Integer> arr = new ArrayList<Integer>();
+			
+			if (rs.next()) {
+				arr.add(rs.getInt("courseid"));
 				while (rs.next()) {
-					s += rs.getString("coursename") + " " + rs.getString("coursenumber") + " | Section: " +  rs.getString("section") + ", Available Seats: " + rs.getInt("seats") + "\n";
+					arr.add(rs.getInt("courseid"));
+				}
+				
+				s += "You are enrolled in:\n\n";
+				for (int i = 0; i < arr.size(); i++) {
+					String query2 = "SELECT * FROM mydb.coursecatalogue where id = ?";
+					PreparedStatement stmt2 = conn.prepareStatement(query2);
+					stmt2.setInt(1, arr.get(i));
+					rs = stmt2.executeQuery();
+					if (rs.next()) {
+						s += rs.getString("coursename") + " " + rs.getString("coursenumber") + " | Section: " +  rs.getString("section") + "\n";
+					}
 				}
 			} else {
-				s += "Course not found.";
+				s += "You are not enrolled in any courses.";
 			}
 			
 			stmt.close();
