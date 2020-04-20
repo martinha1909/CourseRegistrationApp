@@ -80,6 +80,8 @@ private void switcher(String[] word,int num) {
 							{
 								theDataBase.insertCourseOffering(word[0], word[1], word[2], word[3]);
 								theDataBase.decrementAvailableSeats(word[1], word[2], word[3]);
+								socketOut.println("Operation successful");
+								socketOut.println("end");
 							}
 							else {
 								socketOut.println("The course section is full");
@@ -116,6 +118,8 @@ private void switcher(String[] word,int num) {
 						{
 							theDataBase.deleteCourseOffering(word[0], word[1], word[2], word[3]);
 							theDataBase.incrementAvailableSeats(word[1], word[2], word[3]);
+							socketOut.println("Operation successful");
+							socketOut.println("end");
 						}
 						else
 						{
