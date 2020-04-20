@@ -365,11 +365,7 @@ public class Database implements DBCredentials {
 			e.printStackTrace();
 		}
     }
-    
-    public void deleteCourseOffering(String studentId, String courseName, String courseNumber, String section) {
-    	
-    }
-    
+       
     /**
      * Checks if the student is enrolled in said course
      * 
@@ -411,16 +407,77 @@ public class Database implements DBCredentials {
     	return false;
     }
     
+    /**
+     * Deletes an enrolled into the courseoffering table in the database
+     * 
+     * @param studentId
+     * @param courseName
+     * @param courseNumber
+     * @param section
+     */
+    public void deleteCourseOffering(String studentId, String courseName, String courseNumber, String section) {
+    	try {	
+			String query1 = "SELECT * FROM mydb.coursecatalogue where coursename = ? and coursenumber = ? and section = ?";
+			PreparedStatement pStat1 = conn.prepareStatement(query1);
+			pStat1.setString(1, courseName);
+			pStat1.setString(2, courseNumber);
+			pStat1.setString(3, section);
+			rs = pStat1.executeQuery();
+			int courseid = 0;
+			if (rs.next()) {
+				courseid = rs.getInt("id");
+			}
+			
+			int studentid = Integer.parseInt(studentId);
+				
+			String query3 = "DELETE FROM mydb.courseoffering WHERE studentid = ? and courseid = ?";
+			PreparedStatement pStat3 = conn.prepareStatement(query3);
+			pStat3.setInt(1, studentid);
+			pStat3.setInt(2, courseid);
+			pStat3.executeUpdate();
+			
+			pStat1.close();
+			pStat3.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    }
     
-    //DELETE FROM `mydb`.`courseoffering` WHERE (`keyid` = '2');
+    /**
+     * @return all the enrolled courses of a student as a single string
+     */
+    public String getCourseOfferings(String studentId) {
+		int studentid = Integer.parseInt(studentId);
+		String s = "";
+		
+    	try {
+    		String query = "SELECT * FROM mydb.courseoffering where studentid = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setInt(1, studentid);
+			rs = stmt.executeQuery();
+			
+			if (rs.next())
+			{
+				s += rs.getString("coursename") + " " + rs.getString("coursenumber") + " | Section: " +  rs.getString("section") + ", Available Seats: " + rs.getInt("seats") + "\n";
+				while (rs.next()) {
+					s += rs.getString("coursename") + " " + rs.getString("coursenumber") + " | Section: " +  rs.getString("section") + ", Available Seats: " + rs.getInt("seats") + "\n";
+				}
+			} else {
+				s += "Course not found.";
+			}
+			
+			stmt.close();
+    		
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return s;
+    }
     
     public static void main(String[] args) {
     	Database db = new Database();
     	db.initializeConnection();
-    	if (db.isCourseOffering("2", "ENGG", "200", "01")) {
-    		System.out.println("True");
-    	} else {
-    		System.out.println("False");
-    	}
     }
 }
