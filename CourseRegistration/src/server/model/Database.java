@@ -65,11 +65,19 @@ public class Database implements DBCredentials {
 					   " section VARCHAR(255), " +
 					   " seats INTEGER not NULL, " +
 					   " PRIMARY KEY ( id ))";
+		
+		String query3 = "CREATE TABLE courseoffering " + 
+					   "(keyid INTEGER not NULL AUTO_INCREMENT, " + 
+					   " studentid INTEGER not NULL, " + 
+					   " courseid INTEGER not NULL, " +
+					   " grade VARCHAR(255), " +
+					   " PRIMARY KEY ( keyid ))";
 
 		try {
 			Statement stat = conn.createStatement();
 			stat.executeUpdate(query1);
 			stat.executeUpdate(query2);
+			stat.executeUpdate(query3);
 			stat.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -320,94 +328,99 @@ public class Database implements DBCredentials {
         return s;
     }
     
-    public int getNumberOfRows(String tableName)
-    {
-    	int count = 0;
-    	try {
-        	Statement s = conn.createStatement();
-			rs = s.executeQuery("SELECT COUNT(*) AS rowcount FROM " + tableName);
-			rs.next();
-			count = rs.getInt("rowcount");
-			rs.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	return count;
-    }
-    
-    public Course getRow(String tableName, int rowId)
-    {
-    	Course c = null;
-    	try {
-    		String query = "SELECT * FROM " + tableName + " where id = ?";
-			PreparedStatement pStat = conn.prepareStatement(query);
-			pStat.setInt(1, rowId);
-			rs = pStat.executeQuery();
-			if(rs.next())
-				c = new Course(rs.getString("coursename"), Integer.parseInt(rs.getString("coursenumber")));
-			pStat.close();
-			rs.close(); 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	return c;
-    }
-    
-    public int getSecNum(int rowId)
-    {
-    	int section = 0;
-    	try {
-    		String query = "SELECT * FROM mydb.coursecatalogue where id = ?";
-			PreparedStatement pStat = conn.prepareStatement(query);
-			pStat.setInt(1, rowId);
-			rs = pStat.executeQuery();
-			if(rs.next())
-				section = Integer.parseInt(rs.getString("section"));
-			pStat.close();
-			rs.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	return section;
-    }
-    
-    public int getSecCap(int rowId)
-    {
-    	int cap = 0;
-    	try {
-    		String query = "SELECT * FROM mydb.coursecatalogue where id = ?";
-			PreparedStatement pStat = conn.prepareStatement(query);
-			pStat.setInt(1, rowId);
-			rs = pStat.executeQuery();
-			if(rs.next())
-				cap = Integer.parseInt(rs.getString("seats"));
-			rs.close();
-			pStat.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	return cap;
-    }
+    /**
+     * Inserts an enrolled into the courseoffering table in the database
+     * 
+     * @param studentId
+     * @param courseName
+     * @param courseNumber
+     * @param section
+     */
+    public void insertCourseOffering(String studentId, String courseName, String courseNumber, String section) {
+		try {	
+			String query1 = "SELECT * FROM mydb.coursecatalogue where coursename = ? and coursenumber = ? and section = ?";
+			PreparedStatement pStat1 = conn.prepareStatement(query1);
+			pStat1.setString(1, courseName);
+			pStat1.setString(2, courseNumber);
+			pStat1.setString(3, section);
+			rs = pStat1.executeQuery();
+			int courseid = 0;
+			if (rs.next()) {
+				courseid = rs.getInt("id");
+			}
+			
+			int studentid = Integer.parseInt(studentId);
+				
+			String query3 = "INSERT INTO mydb.courseoffering (studentid, courseid, grade) VALUES(?, ?, ?)";
+			PreparedStatement pStat3 = conn.prepareStatement(query3);
+			pStat3.setInt(1, studentid);
+			pStat3.setInt(2, courseid);
+			pStat3.setString(3, "N/A");
+			pStat3.executeUpdate();
+			
+			pStat1.close();
+			pStat3.close();
 
-	public Student getStudent(String studentId) {
-		Student s = null;
-    	try {
-    		String query = "SELECT * FROM 	mydb.student where id = ?";
-			PreparedStatement pStat = conn.prepareStatement(query);
-			pStat.setString(1, studentId);
-			rs = pStat.executeQuery();
-			if(rs.next())
-				s = new Student(rs.getString("firstname"), Integer.parseInt(rs.getString("id")));
-			pStat.close();
-			rs.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	return s;
-	}
+    }
+    
+    public void deleteCourseOffering(String studentId, String courseName, String courseNumber, String section) {
+    	
+    }
+    
+    /**
+     * Checks if the student is enrolled in said course
+     * 
+     * @param studentId
+     * @param courseName
+     * @param courseNumber
+     * @param section
+     * @return true or false
+     */
+    public boolean isCourseOffering(String studentId, String courseName, String courseNumber, String section) {
+    	try {
+    		String query1 = "SELECT * FROM mydb.coursecatalogue where coursename = ? and coursenumber = ? and section = ?";
+			PreparedStatement pStat1 = conn.prepareStatement(query1);
+			pStat1.setString(1, courseName);
+			pStat1.setString(2, courseNumber);
+			pStat1.setString(3, section);
+			rs = pStat1.executeQuery();
+			int courseid = 0;
+			if (rs.next()) {
+				courseid = rs.getInt("id");
+			}
+			
+			int studentid = Integer.parseInt(studentId);
+			
+			String query3 = "SELECT * FROM mydb.courseoffering where studentid = ? and courseid = ?";
+			PreparedStatement pStat3 = conn.prepareStatement(query3);
+			pStat3.setInt(1, studentid);
+			pStat3.setInt(2, courseid);	
+			rs = pStat3.executeQuery();
+			
+			if (rs.next()) {
+				return true;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return false;
+    }
+    
+    
+    //DELETE FROM `mydb`.`courseoffering` WHERE (`keyid` = '2');
+    
+    public static void main(String[] args) {
+    	Database db = new Database();
+    	db.initializeConnection();
+    	if (db.isCourseOffering("2", "ENGG", "200", "01")) {
+    		System.out.println("True");
+    	} else {
+    		System.out.println("False");
+    	}
+    }
 }
